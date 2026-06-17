@@ -1,4 +1,4 @@
-# 🗄️ SQL & Databases Preparation Guide
+# 🗄️ SQL & Databases: Comprehensive Study Guide
 
 As a Software Support Engineer at GreyOrange, database analysis is critical. When a customer reports an issue, you must check transaction records, find stuck states in tables, and extract reports.
 
@@ -89,54 +89,330 @@ LINES TERMINATED BY '\n';</code></pre>
 
 ---
 
-## 📝 4 Must-Know SQL Patterns (Memorize & Write from Memory)
+## ⚡ The Ultimate Trick: SQL Logical Query Execution Order
 
-Interviewers frequently ask candidates to write these patterns on a whiteboard or a shared editor.
+When writing complex queries, you must write them in one order, but the SQL engine executes them in a completely different order. Understanding this is key to debugging syntax and grouping errors.
 
-### Pattern 1: Count Employees per Department (Aggregation & Sorting)
-Find how many employees are in each department, sorted with the highest count first.
-```sql
-SELECT department, COUNT(*) AS total
-FROM employees
-GROUP BY department
-ORDER BY total DESC;
+```
+WRITTEN ORDER:          LOGICAL EXECUTION ORDER (By Engine):
+1. SELECT               1. FROM & JOIN (Loads tables into memory)
+2. FROM                 2. WHERE (Filters individual base rows)
+3. JOIN                 3. GROUP BY (Aggregates rows into groups)
+4. WHERE                4. HAVING (Filters grouped rows)
+5. GROUP BY             5. SELECT (Retrieves columns / calculates expressions)
+6. HAVING               6. DISTINCT (Deduplicates results)
+7. ORDER BY             7. ORDER BY (Sorts output rows)
+8. LIMIT                8. LIMIT / OFFSET (Restricts output count)
 ```
 
-### Pattern 2: INNER JOIN (Show Matching Records Only)
-Display the employee's name alongside their department name. Only shows employees who belong to a valid department.
-```sql
-SELECT e.name, d.department_name
-FROM employees e
-INNER JOIN departments d ON e.dept_id = d.id;
-```
+* **Why this matters**: You cannot use a column alias created in the `SELECT` clause inside the `WHERE` clause because `WHERE` runs *before* `SELECT`. However, you *can* use it in the `ORDER BY` clause because `ORDER BY` runs *after* `SELECT`.
 
-### Pattern 3: LEFT JOIN (Show All Records from Primary Table)
-Display all employees alongside their department names. If an employee has no department (e.g. newly hired), show their name with the department name as `NULL`.
-```sql
-SELECT e.name, d.department_name
-FROM employees e
-LEFT JOIN departments d ON e.dept_id = d.id;
-```
+---
 
-### Pattern 4: Find Employees with Salary Above Average (Subquery)
-Extract a list of employees whose salary is higher than the overall company average.
-```sql
-SELECT name, salary
-FROM employees
-WHERE salary > (SELECT AVG(salary) FROM employees);
+## 🏗️ Venn Diagram Representation of SQL Joins
+
+```mermaid
+graph TD
+    subgraph INNER JOIN
+    A[Left Table] -- Intersection --- B[Right Table]
+    end
+    subgraph LEFT JOIN
+    C[Left Table - ALL] -- Intersection --- D[Right Table - MATCH ONLY]
+    end
+    subgraph RIGHT JOIN
+    E[Left Table - MATCH ONLY] -- Intersection --- F[Right Table - ALL]
+    end
+    subgraph FULL OUTER JOIN
+    G[Left Table - ALL] -- Intersection --- H[Right Table - ALL]
+    end
 ```
 
 ---
 
-## 🏗️ Visualizing JOIN Results
+## 📊 Database Indexing Deep Dive
 
-Assume we have these tables:
-* **`Employees`**: Ravi (dept_id = 10), Priya (dept_id = 20), Rahul (dept_id = NULL)
-* **`Departments`**: 10 (Engineering), 20 (Support), 30 (HR)
+An **Index** is a data structure (typically a B-Tree) that speeds up the retrieval of rows from a table at the cost of additional storage and slower writes.
 
-| Join Type | Result Rows Included | Rows Excluded |
+| Metric | Clustered Index | Non-Clustered Index |
 |---|---|---|
-| **INNER JOIN** | Ravi (Engineering), Priya (Support) | Rahul (no dept), HR (no employees) |
-| **LEFT JOIN** | Ravi (Engineering), Priya (Support), Rahul (NULL) | HR (no employees) |
-| **RIGHT JOIN** | Ravi (Engineering), Priya (Support), NULL (HR) | Rahul (no dept) |
-| **FULL JOIN** | Ravi (Engineering), Priya (Support), Rahul (NULL), NULL (HR) | None |
+| **Physical Storage** | Dictates the physical order of data rows in the table. | Creates a separate index tree. The leaf nodes contain pointers to the data rows. |
+| **Quantity** | **Only 1** allowed per table. | **Multiple** allowed per table. |
+| **Creation** | Automatically created when a Primary Key is defined. | Manually created using `CREATE INDEX`. |
+| **Speed** | Faster retrieval because it leads directly to the data. | Slower than Clustered because it requires an extra lookup step (Index $\rightarrow$ Row). |
+| **Write Impact** | High write cost if index columns change, reorganizing physical data. | Lower write cost (only updates the index tree). |
+
+---
+
+## 🔄 Aggregate Functions vs Window Functions
+
+* **Aggregate Functions (`SUM`, `AVG`, `COUNT`)**: Group multiple rows of data into a single summary row. It collapses individual rows.
+* **Window Functions (`ROW_NUMBER`, `DENSE_RANK`, `LEAD`, `LAG`)**: Perform calculations across a set of table rows related to the current row, but **do not collapse the rows**. Every row retains its unique identity.
+
+### Example: Finding Employee Rank by Salary
+```sql
+SELECT name, department, salary,
+       RANK() OVER (PARTITION BY department ORDER BY salary DESC) AS salary_rank
+FROM employees;
+```
+* `PARTITION BY department` divides the rows into groups (windows) by department.
+* `ORDER BY salary DESC` sorts the employees in each department window.
+* `RANK()` assigns a rank to each employee within their department window.
+
+---
+
+## 📝 15+ Advanced Practice SQL Queries with Explanations
+
+Use the following tables for all queries:
+
+**`employees` Table**
+| id | name | manager_id | dept_id | salary | hire_date |
+|---|---|---|---|---|---|
+| 1 | Ravi | 3 | 10 | 80000 | 2025-01-15 |
+| 2 | Priya | 3 | 20 | 75000 | 2025-02-10 |
+| 3 | Amit | NULL | 10 | 120000 | 2024-05-01 |
+| 4 | Rahul | 1 | 10 | 85000 | 2025-05-20 |
+| 5 | Sneha | 2 | NULL | 60000 | 2026-06-01 |
+
+**`departments` Table**
+| id | department_name |
+|---|---|
+| 10 | Engineering |
+| 20 | Support |
+| 30 | HR |
+
+---
+
+### Query 1: Find the 2nd Highest Salary
+* **Objective**: Retrieve the second highest salary value from the employee table.
+* **Query**:
+  ```sql
+  SELECT MAX(salary) AS second_highest
+  FROM employees
+  WHERE salary < (SELECT MAX(salary) FROM employees);
+  ```
+* **Explanation**: The subquery finds the maximum salary (120,000). The outer query finds the maximum salary that is strictly less than 120,000, which is 85,000.
+* **Expected Output**:
+  | second_highest |
+  |---|
+  | 85000 |
+
+---
+
+### Query 2: Find the 2nd Highest Salary (Using LIMIT & OFFSET)
+* **Objective**: Find the second highest salary using sorting and offsets.
+* **Query**:
+  ```sql
+  SELECT DISTINCT salary
+  FROM employees
+  ORDER BY salary DESC
+  LIMIT 1 OFFSET 1;
+  ```
+* **Explanation**: `ORDER BY salary DESC` sorts salaries from highest to lowest. `LIMIT 1` retrieves one row. `OFFSET 1` skips the first row (the highest).
+* **Expected Output**:
+  | salary |
+  |---|
+  | 85000 |
+
+---
+
+### Query 3: Find Employees Earning More Than Their Managers
+* **Objective**: Identify employees who have a higher salary than their direct manager.
+* **Query**:
+  ```sql
+  SELECT e.name AS employee_name, e.salary AS emp_salary,
+         m.name AS manager_name, m.salary AS mgr_salary
+  FROM employees e
+  INNER JOIN employees m ON e.manager_id = m.id
+  WHERE e.salary > m.salary;
+  ```
+* **Explanation**: We run a Self-Join by joining the employee table `e` to itself as `m` using the manager ID. The `WHERE` clause filters rows where the employee's salary exceeds the manager's salary.
+* **Expected Output**:
+  | employee_name | emp_salary | manager_name | mgr_salary |
+  |---|---|---|---|
+  | Rahul | 85000 | Ravi | 80000 |
+
+---
+
+### Query 4: Find Duplicate Emails (or Names)
+* **Objective**: Retrieve names that appear more than once in the table.
+* **Query**:
+  ```sql
+  SELECT name, COUNT(name) AS occurrences
+  FROM employees
+  GROUP BY name
+  HAVING COUNT(name) > 1;
+  ```
+* **Explanation**: Group rows by the name column. `COUNT(name)` calculates occurrences. `HAVING` filters out names that appear only once.
+
+---
+
+### Query 5: Delete Duplicates keeping the Lowest ID
+* **Objective**: Remove duplicate records from a table, retaining only the record with the minimum ID.
+* **Query**:
+  ```sql
+  DELETE FROM employees
+  WHERE id NOT IN (
+      SELECT MIN(id)
+      FROM employees
+      GROUP BY name
+  );
+  ```
+* **Explanation**: The subquery groups employees by name and finds the minimum ID for each name. The outer query deletes all records whose ID is not part of this list.
+
+---
+
+### Query 6: Find Departments with No Employees
+* **Objective**: Retrieve departments that have no employees assigned to them.
+* **Query**:
+  ```sql
+  SELECT d.department_name
+  FROM departments d
+  LEFT JOIN employees e ON d.id = e.dept_id
+  WHERE e.id IS NULL;
+  ```
+* **Explanation**: We run a `LEFT JOIN` starting with the departments table. This ensures all departments are listed. If a department has no matching employees, the employee fields (`e.id`) become `NULL`. The `WHERE e.id IS NULL` filters for these departments.
+* **Expected Output**:
+  | department_name |
+  |---|
+  | HR |
+
+---
+
+### Query 7: Swap Salary Values in a Single Update
+* **Objective**: Write an update query that swaps salaries of employees (e.g. swap salary of Ravi and Priya) without using a temp table.
+* **Query**:
+  ```sql
+  UPDATE employees
+  SET salary = CASE 
+      WHEN name = 'Ravi' THEN 75000
+      WHEN name = 'Priya' THEN 80000
+      ELSE salary
+  END
+  WHERE name IN ('Ravi', 'Priya');
+  ```
+* **Explanation**: The `CASE` statement dynamically decides the new salary based on the employee's name. The `WHERE` clause restricts updates to only the target rows, preserving performance.
+
+---
+
+### Query 8: Find Employees Hired in the Last 365 Days
+* **Objective**: Retrieve employees hired in the last year.
+* **Query (PostgreSQL)**:
+  ```sql
+  SELECT name, hire_date
+  FROM employees
+  WHERE hire_date >= CURRENT_DATE - INTERVAL '1 year';
+  ```
+* **Query (MySQL)**:
+  ```sql
+  SELECT name, hire_date
+  FROM employees
+  WHERE hire_date >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR);
+  ```
+
+---
+
+### Query 9: Count Active vs Inactive Employees (Conditional Aggregation)
+* **Objective**: Retrieve counts of employees grouped by their status in a single row.
+* **Query**:
+  ```sql
+  SELECT 
+      SUM(CASE WHEN salary >= 80000 THEN 1 ELSE 0 END) AS high_earners,
+      SUM(CASE WHEN salary < 80000 THEN 1 ELSE 0 END) AS low_earners
+  FROM employees;
+  ```
+* **Expected Output**:
+  | high_earners | low_earners |
+  |---|---|
+  | 3 | 2 |
+
+---
+
+### Query 10: Find Employees with No Department Assigned
+* **Objective**: Retrieve employees who do not belong to any department.
+* **Query**:
+  ```sql
+  SELECT name FROM employees WHERE dept_id IS NULL;
+  ```
+* **Expected Output**:
+  | name |
+  |---|
+  | Sneha |
+
+---
+
+### Query 11: Find the Department with the Highest Total Salary
+* **Objective**: Retrieve the department name that has the highest cumulative salary expenditure.
+* **Query**:
+  ```sql
+  SELECT d.department_name, SUM(e.salary) AS total_payroll
+  FROM departments d
+  INNER JOIN employees e ON d.id = e.dept_id
+  GROUP BY d.department_name
+  ORDER BY total_payroll DESC
+  LIMIT 1;
+  ```
+* **Expected Output**:
+  | department_name | total_payroll |
+  |---|---|
+  | Engineering | 285000 |
+
+---
+
+### Query 12: List Department Name and its Average Salary, showing only those above 80,000
+* **Objective**: Aggregate salaries by department and filter groups.
+* **Query**:
+  ```sql
+  SELECT d.department_name, AVG(e.salary) AS avg_salary
+  FROM departments d
+  INNER JOIN employees e ON d.id = e.dept_id
+  GROUP BY d.department_name
+  HAVING AVG(e.salary) > 80000;
+  ```
+* **Expected Output**:
+  | department_name | avg_salary |
+  |---|---|
+  | Engineering | 95000.00 |
+
+---
+
+### Query 13: Find Employees with the Same Salary
+* **Objective**: Find employees who share identical salary values.
+* **Query**:
+  ```sql
+  SELECT e1.name, e1.salary
+  FROM employees e1
+  INNER JOIN employees e2 ON e1.salary = e2.salary AND e1.id <> e2.id;
+  ```
+* **Explanation**: Self-join employees based on salary. The condition `e1.id <> e2.id` prevents matching an employee to themselves.
+
+---
+
+### Query 14: Extract the Domain Name from Email Column
+* **Objective**: Split email strings to retrieve domain names.
+* **Query (PostgreSQL)**:
+  ```sql
+  -- Assuming emails exist in a column named email
+  SELECT name, SUBSTRING(email FROM '@(.*)$') AS domain
+  FROM employees;
+  ```
+* **Query (MySQL)**:
+  ```sql
+  SELECT name, SUBSTRING_INDEX(email, '@', -1) AS domain
+  FROM employees;
+  ```
+
+---
+
+### Query 15: Find the N-th Highest Salary (Using Subquery)
+* **Objective**: General subquery method to find Nth highest salary without using LIMIT.
+* **Query**:
+  ```sql
+  SELECT e1.salary
+  FROM employees e1
+  WHERE N-1 = (
+      SELECT COUNT(DISTINCT e2.salary)
+      FROM employees e2
+      WHERE e2.salary > e1.salary
+  );
+  ```
+* **Explanation**: For the Nth highest salary, there must exist exactly N-1 distinct salaries higher than it. If N=2, it finds the salary where exactly 1 salary is higher.
