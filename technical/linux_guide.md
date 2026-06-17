@@ -1,226 +1,184 @@
-# 🐧 Linux Systems & Operations Preparation Guide
+# 🐧 Linux Systems & Operations Prep Guide
 
 In a Software Support Engineer role at GreyOrange, Linux is your primary environment. You will be troubleshooting warehouse software, checking system health, reading logs, and writing scripts on Linux servers.
 
 ---
 
-## 🔍 Core Concept: Linux vs Unix
-* **Unix**: A proprietary operating system developed in the late 1960s at AT&T Bell Labs (e.g., AIX, Solaris, HP-UX). It is closed-source and has specific hardware requirements.
-* **Linux**: An open-source, free kernel created by Linus Torvalds in 1991. Linux is combined with GNU utilities to form full operating systems (distributions or "distros") like Ubuntu, Red Hat, CentOS, and Debian.
-* **Key Difference**: Unix is a full, proprietary OS, while Linux is an open-source kernel that powers various OS distributions.
+## ⭐ Confirmed 2025 Batch Interview Commands
+These commands were explicitly asked in the GreyOrange interviews for the 2025 batch. Make sure you know them by heart.
+
+### 1. ⭐ `tail -10 logfile.log`
+* **Purpose**: Show the last 10 lines of a log file.
+* **Usage**: Extremely common in support roles to check the latest errors or system messages.
+* **Pro Tip**: Use `tail -f logfile.log` to watch logs scroll in real-time as events occur.
+
+### 2. ⭐ `scp file.txt user@host:/path`
+* **Purpose**: Securely copy a file from a local machine to a remote server (or vice-versa) over SSH.
+* **Usage**: Copying logs, configuration files, or scripts between environments.
+
+### 3. ⭐ `chmod +x filename`
+* **Purpose**: Add execute permission (`+x`) to a file, making it runnable as a program or script.
+* **Usage**: Preparing shell (`.sh`) or Python (`.py`) scripts for execution.
+
+### 4. ⭐ `chown user filename`
+* **Purpose**: Change the owner of a file to a specific user.
+* **Usage**: Resolving "Permission Denied" errors when an application process cannot write to a file because it is owned by a different user (e.g. `root`).
+* **Note**: Use `chown user:group filename` to change both owner and group.
+
+### 5. ⭐ `free -m`
+* **Purpose**: Check RAM (memory) usage on the machine in Megabytes.
+* **Usage**: Displays total, used, free, shared, buffer/cache, and available physical memory and swap space.
+
+### 6. ⭐ `htop` / `top`
+* **Purpose**: Real-time system monitoring (CPU, RAM, Running Processes).
+* **Usage**: `top` is the standard system monitor. `htop` is a newer, colorful, and interactive command-line interface that allows you to search, sort, and kill processes easily.
 
 ---
 
-## 📋 Specific LPU DCS Email Questions & Answers
+## ▾ Expandable Core Commands Q&A
 
-### Q1: What is the basic difference between Linux and Unix?
-* **Answer**: UNIX is a proprietary, full-fledged operating system family, whereas Linux is a free and open-source kernel. Linux distributions are built on top of the Linux kernel combined with GNU tools, making Linux a popular, free alternative to Unix.
+Please tap on any question below to expand its detailed answer.
 
-### Q2: How can you copy a log file from one Linux server to another?
-* **Answer**: By using the `scp` (Secure Copy) command.
-  * **Syntax**: `scp /path/to/local/logfile.log username@remote_host:/path/to/destination/`
-  * Alternatively, `rsync` can be used for syncing directories and large log files efficiently: `rsync -avz logfile.log username@remote_host:/destination/`
+<details>
+<summary><b>Q1: What is the basic difference between Linux and Unix?</b></summary>
+<br>
+<blockquote>
+<b>Answer:</b> 
+<ul>
+  <li><b>Linux is a Kernel</b>: It is free and open-source, created by Linus Torvalds in 1991. It is combined with GNU utilities to form full operating systems called distributions (e.g., Ubuntu, CentOS, Red Hat).</li>
+  <li><b>Unix is a Full Operating System</b>: Developed by AT&T Bell Labs in the late 1960s, it is closed-source, proprietary, and usually runs on specific hardware (e.g., IBM AIX, Oracle Solaris, HP-UX).</li>
+  <li><b>Summary</b>: UNIX is a proprietary OS family, while Linux is an open-source kernel used to build free operating systems.</li>
+</ul>
+</blockquote>
+</details>
 
-### Q3: If you have a log file and you need to see the last 10 lines of that log file, how can you do it?
-* **Answer**: By using the `tail` command.
-  * **Syntax**: `tail -10 logfile.log` (or `tail -n 10 logfile.log`).
-  * *Tip for Support*: To view logs in real-time as they update, use `tail -f logfile.log`.
+<details>
+<summary><b>Q2: How do you check running processes on a Linux machine?</b></summary>
+<br>
+<blockquote>
+<b>Answer:</b>
+<ul>
+  <li>Use <code>ps aux</code> to get a detailed snapshot of all running processes on the system:
+    <ul>
+      <li><code>a</code> = show processes for all users.</li>
+      <li><code>u</code> = display user/owner details.</li>
+      <li><code>x</code> = show processes not attached to a terminal.</li>
+    </ul>
+  </li>
+  <li>To find a specific process (e.g., a Python app), pipe it to grep: <code>ps aux | grep python</code>.</li>
+  <li>For real-time interactive monitoring, use <code>top</code> or <code>htop</code>.</li>
+</ul>
+</blockquote>
+</details>
 
-### Q4: If you need to change permissions of any file to executable and change its ownership, how can we do that?
-* **Answer**:
-  * **Changing Permission**: Use `chmod` command.
-    * `chmod +x filename` (makes it executable for all).
-    * `chmod 755 filename` (owner can read/write/execute; group/others can read/execute).
-  * **Changing Owner**: Use `chown` command.
-    * `sudo chown newowner filename`.
-    * To change both owner and group: `sudo chown newowner:newgroup filename`.
+<details>
+<summary><b>Q3: How do you search for specific text inside a file?</b></summary>
+<br>
+<blockquote>
+<b>Answer:</b>
+By using the <code>grep</code> command (Global Regular Expression Print).
+<ul>
+  <li><b>Basic Search</b>: <code>grep "ERROR" app.log</code></li>
+  <li><b>Case-Insensitive</b>: <code>grep -i "exception" app.log</code> (finds Exception, exception, EXCEPTION).</li>
+  <li><b>Show Line Numbers</b>: <code>grep -n "failed" transaction.log</code>.</li>
+  <li><b>Recursive Search</b>: <code>grep -r "NullPointerException" /var/log/app/</code> (searches all files inside the folder).</li>
+  <li><b>Count Matches</b>: <code>grep -c "timeout" app.log</code> (returns the count of lines containing the term).</li>
+</ul>
+</blockquote>
+</details>
 
-### Q5: If you need to check the memory consumption and CPU utilization of any Linux machine, how can you do that?
-* **Answer**:
-  * **Memory Consumption**: Use `free -m` (displays memory in Megabytes) or `free -h` (human-readable format).
-  * **CPU Utilization**: Use `top` (standard utility) or `htop` (interactive, colorful, and user-friendly interface).
+<details>
+<summary><b>Q4: What are aliases in Linux? How do you make an alias persistent for all users?</b></summary>
+<br>
+<blockquote>
+<b>Answer:</b>
+An alias is a customized shortcut for a long or frequently used command.
+<ul>
+  <li><b>Temporary Alias</b>: <code>alias ll='ls -la'</code> (lasts only for the current terminal session).</li>
+  <li><b>Persistent for One User</b>: Add the alias definition to the user's <code>~/.bashrc</code> file, then run <code>source ~/.bashrc</code>.</li>
+  <li><b>Persistent System-Wide (All Users)</b>: 
+    <ol>
+      <li>Open the system-wide configuration file using sudo: <code>sudo nano /etc/bash.bashrc</code> (on Debian/Ubuntu) or <code>sudo nano /etc/profile</code>.</li>
+      <li>Append the alias at the end: <code>alias mycommand='actual_long_command'</code>.</li>
+      <li>Save and exit (Ctrl+O, Enter, Ctrl+X in nano).</li>
+      <li>Apply changes: <code>source /etc/bash.bashrc</code>.</li>
+    </ol>
+  </li>
+</ul>
+</blockquote>
+</details>
 
-### Q6: What are aliases in Linux, and how can you make an alias that is usable by all users on a Linux server?
-* **Answer**: An alias is a shortcut for a long command.
-  * To make an alias for a single user, edit `~/.bashrc`.
-  * To make an alias **usable by all users (system-wide)**, edit `/etc/bash.bashrc` (Debian/Ubuntu) or `/etc/profile` by adding:
-    `alias mycommand='actual_long_command'`
-  * Then run `source /etc/bash.bashrc` to apply the changes immediately.
+<details>
+<summary><b>Q5: How do you check available disk space on a Linux server?</b></summary>
+<br>
+<blockquote>
+<b>Answer:</b>
+<ul>
+  <li><b>For Filesystems</b>: Use <code>df -h</code> (Disk Free, Human-readable). It displays the total, used, available, and usage percentage of all mounted partitions.
+    <ul>
+      <li><i>Critical flag</i>: <code>-h</code> shows sizes in GB/MB instead of blocks.</li>
+    </ul>
+  </li>
+  <li><b>For Specific Directories</b>: Use <code>du -sh /path/to/folder</code> (Disk Usage, Summary, Human-readable). Shows the size of a specific folder and its contents.
+    <ul>
+      <li>To find which folder is consuming the most space in the current directory: <code>du -sh * | sort -h</code>.</li>
+    </ul>
+  </li>
+</ul>
+</blockquote>
+</details>
+
+<details>
+<summary><b>Q6: What does chmod 755 mean? Explain the number logic.</b></summary>
+<br>
+<blockquote>
+<b>Answer:</b>
+In Linux, file permissions are divided into 3 sets of users, represented by 3 digits:
+<ol>
+  <li><b>First Digit (7)</b>: Owner (User who created the file).</li>
+  <li><b>Second Digit (5)</b>: Group (Users belonging to the file's group).</li>
+  <li><b>Third Digit (5)</b>: Others (Everyone else on the system).</li>
+</ol>
+Permissions have numeric values:
+<ul>
+  <li><b>Read (r)</b> = 4</li>
+  <li><b>Write (w)</b> = 2</li>
+  <li><b>Execute (x)</b> = 1</li>
+</ul>
+Adding these values creates the permission digits:
+<ul>
+  <li><code>7</code> = 4 + 2 + 1 $\rightarrow$ <b>Read, Write, and Execute (rwx)</b>.</li>
+  <li><code>5</code> = 4 + 0 + 1 $\rightarrow$ <b>Read and Execute (r-x)</b>.</li>
+  <li><code>4</code> = 4 + 0 + 0 $\rightarrow$ <b>Read-Only (r--)</b>.</li>
+</ul>
+Therefore, <b><code>chmod 755 filename</code></b> gives the owner full access (read, write, execute) and allows the group and others to only read and execute the file.
+</blockquote>
+</details>
+
+<details>
+<summary><b>Q7: A server's CPU utilization suddenly spikes to 100%. What are your first 5 troubleshooting steps?</b></summary>
+<br>
+<blockquote>
+<b>Answer:</b>
+If the CPU hits 100% capacity, I will isolate and resolve it using these steps:
+<ol>
+  <li><b>Identify the Offending Process</b>: Run <code>top</code> or <code>htop</code> and press <code>Shift + P</code> (in top) to sort processes by CPU utilization. Identify the process ID (PID) and the command running it.</li>
+  <li><b>Analyze the Process</b>: Check if it is a legitimate system application (e.g., an database index run) or a stuck/runaway user script (e.g., an infinite loop in Python).</li>
+  <li><b>Investigate Open Threads and Logs</b>: Check what files the process is accessing using <code>lsof -p <PID></code>, and inspect the application logs for infinite loops or massive data-dumping exceptions.</li>
+  <li><b>Graceful Terminate</b>: If it is a runaway process that needs to stop, attempt to terminate it gracefully: <code>kill -15 <PID></code> (SIGTERM). This allows the application to save states and close files.</li>
+  <li><b>Force Kill (If Unresponsive)</b>: If the process refuses to stop and is endangering server stability, terminate it instantly: <code>kill -9 <PID></code> (SIGKILL). Report the issue to R&D or systems leads with the logged process details.</li>
+</ol>
+</blockquote>
+</details>
 
 ---
 
-## 🛠️ Essential Linux Command Reference
+## 🛠️ Complete Linux Command Catalog
 
-### 1. Directory Navigation & Information
-* `pwd`: Print Working Directory. Shows your current location.
-* `ls`: List files in the current directory.
-  * `ls -a`: List all files (including hidden files starting with `.`).
-  * `ls -l`: List files in long format (displays permissions, owner, size, date).
-  * `ls -lh`: List files in long format with human-readable sizes (KB, MB, GB).
-* `cd`: Change directory.
-  * `cd ..`: Go up one directory level.
-  * `cd ~`: Go to home directory.
-  * `cd -`: Go to the previous directory you were working in.
-
-### 2. File and Directory Operations
-* `touch filename`: Create an empty file or update timestamps.
-* `mkdir dirname`: Create a new directory.
-* `cp source destination`: Copy files. Use `cp -r` to copy directories recursively.
-* `mv source destination`: Move or rename files/directories.
-* `rm filename`: Remove a file.
-  * `rm -r dirname`: Remove a directory recursively.
-  * `rm -rf dirname`: Forceful recursive removal (use with extreme caution!).
-* `ln -s target link_name`: Create a symbolic link (shortcut) to a file.
-
-### 3. File Permissions & Ownership Deep Dive
-In Linux, files have 3 permission types for 3 user categories:
-* **User categories**: Owner (`u`), Group (`g`), Others (`o`).
-* **Permission types**: Read (`r` = 4), Write (`w` = 2), Execute (`x` = 1).
-
-| Permission String | Numeric | Description |
-|---|---|---|
-| `rwx------` | 700 | Only owner can read, write, and execute. |
-| `rwxr-xr-x` | 755 | Owner can read/write/execute. Group & others can read/execute. (Common for scripts). |
-| `rw-r--r--` | 644 | Owner can read/write. Group & others can only read. (Common for configs/logs). |
-| `rwxrwxrwx` | 777 | Everyone can do everything. (High security risk!). |
-
-* **Commands**:
-  * `chmod 755 script.sh`: Set permissions using octal numbers.
-  * `chmod u+x script.sh`: Add execute permission only to the owner.
-  * `chown ravish:dev team_log.log`: Change owner to `ravish` and group to `dev`.
-
-### 4. Text Processing & Log Analysis (Crucial for Support)
-As a support engineer, you will spend 50% of your time reading logs.
-* `cat filename`: Print the entire file contents to the screen.
-* `less filename`: Open file for page-by-page reading (use arrow keys, press `q` to exit). Much safer for large files than `cat`.
-* `head -n 20 filename`: Show the first 20 lines of a file.
-* `tail -n 20 filename`: Show the last 20 lines of a file.
-* `tail -f /var/log/app.log`: Monitor incoming logs in real-time (press `Ctrl+C` to stop).
-* `grep "keyword" file`: Search for a specific pattern inside a file.
-  * `grep -i "error" app.log`: Case-insensitive search for "error".
-  * `grep -c "exception" app.log`: Count the occurrences of "exception".
-  * `grep -rn "failed" /var/log/`: Recursively search for "failed" in all files in `/var/log` and display line numbers.
-* `find /path -name "*.log"`: Find all files matching the pattern in the path.
-  * `find . -size +100M`: Find files larger than 100MB in the current directory.
-* `awk '{print $1}' logfile.log`: Print the first column of each line (useful for extracting IP addresses or timestamps from logs).
-* `sed -i 's/old/new/g' config.txt`: Replace all occurrences of "old" with "new" directly in `config.txt`.
-
-### 5. System Health & Performance
-* `df -h`: Shows disk space usage of all mounted filesystems.
-* `du -sh *`: Shows the size of all directories and files in the current folder.
-* `free -m`: Shows free and used RAM in Megabytes.
-* `uptime`: Shows how long the system has been running, number of users, and system load average (over 1, 5, and 15 minutes).
-* `top`: Live task manager showing CPU, Memory, and active processes.
-* `htop`: Interactive task manager (often preferred for better readability).
-* `ps aux`: Displays details of all running processes in the system.
-  * `ps aux | grep python`: Find all running Python processes.
-* `kill -9 PID`: Force-kill a process using its Process ID (PID).
-* `lsof -i :8080`: List files (and processes) using port 8080.
-
----
-
-## 📝 30+ Linux Practice Q&As (Self-Test)
-
-### File Operations
-#### Q1: What happens if you run `cd -`?
-* **A**: It returns you to the directory you were in immediately before the current one.
-
-#### Q2: How do you create a directory structure like `project/src/tests` with a single command?
-* **A**: Use the `-p` (parents) flag: `mkdir -p project/src/tests`.
-
-#### Q3: Difference between `rm -r` and `rm -f`?
-* **A**: `-r` deletes directories recursively (prompting for write-protected files). `-f` forces deletion without prompting and ignores non-existent files. Combining them (`rm -rf`) deletes everything instantly.
-
-#### Q4: How do you count the number of lines, words, and characters in a file?
-* **A**: Use the `wc` command: `wc filename` (or `wc -l filename` to get only the line count).
-
-#### Q5: What is a symbolic link, and how is it different from a hard link?
-* **A**: A symbolic link (symlink) is like a desktop shortcut; it points to the path of another file. If the original file is deleted, the symlink breaks. A hard link points directly to the inode (raw data block) on the disk; even if the original file is deleted, the hard link still accesses the content.
-
-### Searching & Filtering
-#### Q6: How do you search for files modified in the last 24 hours?
-* **A**: Use `find . -mtime -1`.
-
-#### Q7: How do you search for the word "database" in all files within a directory, ignoring case?
-* **A**: Use `grep -ri "database" /path/to/directory/`.
-
-#### Q8: How can you find all process IDs running a service named "java"?
-* **A**: Use `pgrep java` or `ps aux | grep java | grep -v grep`.
-
-#### Q9: How do you view lines 50 to 60 of a text file?
-* **A**: Use a combination of head and tail: `head -n 60 file.txt | tail -n 11`. (Or use sed: `sed -n '50,60p' file.txt`).
-
-#### Q10: How do you redirect the output of a command to a file, overwriting it? And how do you append to it?
-* **A**: Use `>` to overwrite: `echo "hello" > file.txt`. Use `>>` to append: `echo "world" >> file.txt`.
-
-### Permissions & System Admin
-#### Q11: Explain what `-rwxr-xr--` permission means.
-* **A**:
-  * Owner has read, write, and execute (`rwx` = 7).
-  * Group has read and execute (`r-x` = 5).
-  * Others have read-only (`r--` = 4).
-  * In numeric form: `754`.
-
-#### Q12: How do you run a command with root (administrator) privileges?
-* **A**: Prefix the command with `sudo` (e.g., `sudo systemctl restart apache2`).
-
-#### Q13: What does the command `chmod +x script.py` do?
-* **A**: It adds execute permissions for the owner, group, and others on `script.py`.
-
-#### Q14: How do you check which user you are currently logged in as?
-* **A**: Run the `whoami` command.
-
-#### Q15: How do you list all members of a specific group?
-* **A**: Run `getent group group_name` or view the `/etc/group` file.
-
-### System Health & Troubleshooting
-#### Q16: How do you check if your server's root disk partition is full?
-* **A**: Run `df -h /`. Look at the "Use%" column.
-
-#### Q17: What does the "Load Average" in `uptime` mean?
-* **A**: It shows the average system load over 1, 5, and 15 minutes. It represents the number of processes that are either running or waiting for CPU time. On a 4-core system, a load average of 4.0 means the CPU is at 100% capacity.
-
-#### Q18: How do you check which process is consuming the most RAM?
-* **A**: Run `top` and press `Shift + M` to sort by memory usage (or use `htop` and click on the MEM% column).
-
-#### Q19: If a service is stuck and not responding, how do you find its PID and terminate it immediately?
-* **A**: Find PID with `ps aux | grep service_name` or `pgrep service_name`. Terminate it immediately with `kill -9 PID`.
-
-#### Q20: How do you check the IP address of your Linux machine?
-* **A**: Run `ip addr show` or `ifconfig` (if net-tools is installed) or `hostname -I`.
-
-### Networking & Log management
-#### Q21: How do you check if a remote server is reachable?
-* **A**: Use `ping IP_ADDRESS` or `ping domain.com`.
-
-#### Q22: How do you download a file from the internet directly using the terminal?
-* **A**: Use `wget URL` or `curl -O URL`.
-
-#### Q23: How do you check which network ports are currently open and listening on your server?
-* **A**: Run `netstat -tuln` or `ss -tuln`.
-  * `-t` = TCP, `-u` = UDP, `-l` = Listening, `-n` = Numeric ports.
-
-#### Q24: What is the purpose of the `/var/log` directory?
-* **A**: It stores system, application, and daemon log files (e.g., `/var/log/auth.log` for authentication/login events, `/var/log/syslog` for general messages).
-
-#### Q25: How do you view log updates in real-time?
-* **A**: Run `tail -f /var/log/app.log`.
-
-### Advanced Support Operations
-#### Q26: How do you compress a directory named `logs/` into a compressed archive named `logs.tar.gz`?
-* **A**: Run `tar -czvf logs.tar.gz logs/`.
-  * `-c` = create, `-z` = gzip compression, `-v` = verbose, `-f` = file name.
-
-#### Q27: How do you extract `logs.tar.gz`?
-* **A**: Run `tar -xzvf logs.tar.gz`.
-  * `-x` = extract.
-
-#### Q28: How do you find and list all files larger than 50MB and delete them in one command?
-* **A**: Run `find . -type f -size +50M -exec rm -f {} \;` (use with extreme caution!).
-
-#### Q29: What is `cron`, and how do you schedule a script to run every day at midnight?
-* **A**: `cron` is a time-based job scheduler. Run `crontab -e` and add the line:
-  `0 0 * * * /path/to/script.sh`
-
-#### Q30: How do you check the last 5 commands you ran in the terminal?
-* **A**: Run the `history` command and look at the last few lines, or run `history | tail -5`.
+Refer to [Linux Commands Cheat Sheat1.pdf](file:///d:/Temp/grey-orange/Linux%20Commands%20Cheat%20Sheat1.pdf) in the root directory for a full visual index of:
+* **Directory Navigation**: `ls -la`, `cd -`, `pwd`.
+* **File Operations**: `mkdir -p`, `rm -rf`, `cp -r`, `ln -s`.
+* **Compression**: `tar -czvf` (compress), `tar -xzvf` (extract).
+* **System Metrics**: `uptime` (load averages), `free -m`, `df -h`.
+* **File Transfer**: `scp`, `rsync -avz`.
+* **Keyboard Shortcuts**: `Ctrl + C` (kill run), `Ctrl + Z` (suspend), `Ctrl + R` (search command history).

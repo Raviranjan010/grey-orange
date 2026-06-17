@@ -4,79 +4,153 @@ Day 1 of the GreyOrange drive (June 23) starts with the Pre-Placement Talk follo
 
 ---
 
-## 👥 Part 1: Group Discussion (GD) Strategy
+## 🚀 Part 1: Personalized Self-Introduction (Rehearse Aloud)
+This script is custom-built for your profile. It takes exactly 60–90 seconds to present. Practice speaking it naturally without sounding robotic.
 
-### 1. Golden Rules of GD
-* **Do not shout**: Speaking loudly or aggressively gets you disqualified. Speak with a calm, firm, and clear voice.
-* **First speaker vs. Contributor**: Initiating the GD is great, but only if you have solid points. If you don't start, try to enter as the 2nd or 3rd speaker to establish yourself early.
-* **Active Listening**: Look at the speaker, nod, and make eye contact with the group (not the evaluator).
-* **Bring in others**: If someone is struggling to speak, say: *"I notice my peer here wants to add a point, let's hear their perspective."* (Evaluators love this leadership quality).
-* **Summarize**: If given the chance at the end, summarize the group's collective points objectively.
+### 📝 The Script
 
-### 2. Speaking Templates
-* **To open the GD**: *"Good morning everyone. Today we are gathered to discuss [Topic]. To initiate, I believe..."*
-* **To agree**: *"I completely agree with Ravi's point because [add a supporting fact]..."*
-* **To disagree politely**: *"While I understand Priya's perspective that [their point], we must also consider the fact that [your counterpoint]..."*
-* **To bring structure**: *"Friends, we are drifting from the main topic. Let's redirect our focus to..."*
-
-### 3. High-Yield Topics & Talking Points
-
-#### Topic A: AI & Automation in Logistics (Highly Relevant to GreyOrange)
-* **Context**: GreyOrange builds warehouse robots.
-* **Points**:
-  * Automation does not replace workers; it augments them. Robots handle heavy lifting and speed up order processing, while humans focus on control, programming, and exception handling.
-  * Warehouse logistics automation reduces shipping errors, optimizes warehouse storage density, and ensures 24x7 operations.
-  * Real-time tracking and predictive inventory management powered by AI (like GreyMatter software) are changing how globally distributed supply chains function.
-
-#### Topic B: Is AI Replacing Software Jobs?
-* **Points**:
-  * AI tools (like Copilot or Gemini) are productivity boosters, not replacements. They write boilerplate code, but designing secure, scalable architectures still requires human logic.
-  * The demand is shifting from "coders who only write syntax" to "engineers who can solve systems issues, deploy apps, and automate operations."
-  * Jobs in DevOps, SRE, and Support are becoming more critical as systems grow in complexity and require human oversight.
-
-#### Topic C: Remote Work (WFH) vs. Office Work (WFO)
-* **Points**:
-  * WFH offers flexibility and saves commute time, but can lead to isolation and communication silos.
-  * WFO fosters collaboration, corporate culture, and faster mentorship for freshers.
-  * A hybrid model is the optimal middle path, offering the best of both worlds.
+1. **Name + College + Branch (10 sec)**
+   > "Good morning. I'm Ravi, a final-year B.Tech CSE student at Lovely Professional University, graduating in 2027."
+2. **Technical Skills (15 sec)**
+   > "My core strengths are Python, SQL, and web development with React and Node.js. I've been actively developing hands-on experience with Linux and cloud platforms including Oracle Cloud and IBM Watsonx."
+3. **Internships + Projects (20 sec)**
+   > "I completed internships at IBM SkillsBuild focusing on AI and cloud via AICTE, and at UptoSkills on satellite technology. I've built multiple production-quality projects including a full-stack CS learning platform and a financial news sentiment analysis system."
+4. **Why This Role (15 sec)**
+   > "I'm drawn to GreyOrange specifically because working on support for robotics automation software means dealing with real enterprise systems at scale — not just writing code but understanding how systems behave in production."
+5. **Close (10 sec)**
+   > "I'm confident that my technical foundation and problem-solving mindset make me a strong fit for this role. Thank you."
 
 ---
 
-## 🚀 Part 2: Custom Self-Introduction Script
-*(Practice this to speak fluidly for 90 seconds without pausing)*
+### ⚠️ What NOT to Say in Your Introduction
+* ❌ **"I am a hardworking person"** (Too generic; show your work, don't just state traits).
+* ❌ **"I love learning new things"** (Overused by everyone; instead, show it by mentioning your Watsonx/Oracle cloud learning).
+* ❌ **Reading from memory word-for-word** (Sounds robotic; internalize the structure and speak conversationally).
+* ❌ **Going beyond 2 minutes** (The interviewer will lose interest; keep it punchy and structured).
+* ❌ **Saying "I don't have much experience"** (Avoid self-deprecation; you have solid internship and project experience).
 
-> "Good morning/afternoon, panel. 
-> 
-> My name is [Your Name], and I am currently pursuing my B.Tech in Computer Science and Engineering from Lovely Professional University, Jalandhar.
-> 
-> Throughout my degree, I have developed a strong foundation in Operating Systems, Database Management Systems, and Networking. In terms of technical skills, I am proficient in Python and SQL, and I regularly work in Linux environments for my project deployments.
-> 
-> I have built several projects, including a web-based [Mention a major web project or movie recommendation app you built] and have participated in hackathons where I was responsible for backend integrations and server setup. 
-> 
-> These experiences taught me how to troubleshoot system bottlenecks, analyze server logs, and write automation scripts to keep applications running smoothly.
-> 
-> I am very excited about the Software Support Engineer role at GreyOrange. I admire your work in warehouse automation and AI-driven logistics, and I believe my combination of Python/SQL skills, Linux familiarity, and systems troubleshooting mindset makes me a great fit for your global operations. Thank you."
+---
+
+## 👥 Part 2: Group Discussion (GD) Preparation
+
+Group Discussion is about structured thinking and confident delivery, not winning arguments. Use the **PREP method**: **P**oint $\rightarrow$ **R**eason $\rightarrow$ **E**xample $\rightarrow$ **C**onclude. Speak for 60-90 seconds per turn. Don't interrupt; acknowledge others.
+
+Please tap on any topic below to expand its talking points.
+
+<details>
+<summary><b>Topic 1: AI and automation replacing jobs</b></summary>
+<br>
+<blockquote>
+<b>Talking Points:</b>
+<ul>
+  <li><b>Point</b>: AI automates repetitive tasks but creates higher-value roles. GreyOrange itself deploys warehouse robots but still needs engineers to support and maintain them.</li>
+  <li><b>Counter</b>: Not all workers can reskill quickly, leading to short-term displacement.</li>
+  <li><b>Conclusion</b>: Reskilling programs are key — technology should augment human potential, not replace it.</li>
+</ul>
+</blockquote>
+</details>
+
+<details>
+<summary><b>Topic 2: Work from home vs office</b></summary>
+<br>
+<blockquote>
+<b>Talking Points:</b>
+<ul>
+  <li><b>Point</b>: For support roles like this one, pure Work From Home is limited because 24×7 rotational shifts and production warehouse systems often require physical or on-site hybrid presence.</li>
+  <li><b>Counter</b>: Remote work saves commute time and offers flexible hours, which is highly appreciated.</li>
+  <li><b>Conclusion</b>: A hybrid environment (which GreyOrange uses) is the best trade-off between employee flexibility and operational collaboration.</li>
+</ul>
+</blockquote>
+</details>
+
+<details>
+<summary><b>Topic 3: India as a global technology hub</b></summary>
+<br>
+<blockquote>
+<b>Talking Points:</b>
+<ul>
+  <li><b>Point</b>: India produces the largest pool of engineering graduates globally. Many global automation companies (like GreyOrange, which operates from Atlanta) run their core development and support operations from India.</li>
+  <li><b>Counter</b>: Historically, there was an R&D and infrastructure investment gap, making India more of a services hub than a product hub.</li>
+  <li><b>Conclusion</b>: The growth of SaaS and product startups in India shows that the country is successfully transitioning into a global R&D and technology leader.</li>
+</ul>
+</blockquote>
+</details>
+
+<details>
+<summary><b>Topic 4: Handling a difficult customer scenario (Situational GD)</b></summary>
+<br>
+<blockquote>
+<b>Talking Points:</b>
+<ul>
+  <li><b>Point</b>: In high-stakes environments, solving customer issues requires a structured framework: Listen $\rightarrow$ Empathize $\rightarrow$ Investigate $\rightarrow$ Update $\rightarrow$ Resolve.</li>
+  <li><b>Counter</b>: Support engineers might feel pressured to fix issues too quickly, leading to bad communication.</li>
+  <li><b>Key phrase to use</b>: <i>"I would keep the customer informed at every step of the investigation and set realistic expectations."</i></li>
+</ul>
+</blockquote>
+</details>
+
+<details>
+<summary><b>Topic 5: Startup culture vs corporate stability</b></summary>
+<br>
+<blockquote>
+<b>Talking Points:</b>
+<ul>
+  <li><b>Point</b>: GreyOrange is a funded product company, representing a sweet spot between startup agility and corporate scaling. Startups offer fast-paced learning and ownership, while corporatized structures offer stability.</li>
+  <li><b>Counter</b>: Startups can have chaotic execution; large corporations can suffer from slow bureaucracy.</li>
+  <li><b>Conclusion</b>: For a systems support role, having structured Standard Operating Procedures (SOPs) and clear escalation paths (like GreyOrange's) is crucial for managing global client operations.</li>
+</ul>
+</blockquote>
+</details>
+
+<details>
+<summary><b>Topic 6: Importance of communication in technical roles (High Priority)</b></summary>
+<br>
+<blockquote>
+<i>Note: This is almost certain to appear as it was stressed repeatedly in campus alerts.</i>
+<br><br>
+<b>Talking Points:</b>
+<ul>
+  <li><b>Point</b>: A technically perfect bug fix that is not communicated clearly to a client is still a failed resolution. In a Software Support environment, the client experience IS the product.</li>
+  <li><b>Reason</b>: Technical support is client-facing. If an engineer is resolving an issue but fails to provide updates or explain steps clearly, client anxiety rises, damaging trust.</li>
+  <li><b>Conclusion</b>: Engineers must bridge the gap between complex code systems and simple, user-friendly communication. High technical knowledge must go hand-in-hand with clear communication.</li>
+</ul>
+</blockquote>
+</details>
 
 ---
 
 ## ❓ Part 3: Common HR & Behavioral Q&As
 
-### Q1: Why GreyOrange?
-* **A**: *"GreyOrange is a global leader in warehouse robotics and AI-powered automation. I am fascinated by how your hardware Ranger robots integrate with your GreyMatter software to solve real-time supply chain bottlenecks. Being a CSE student, working on enterprise-scale applications that impact global logistics is a huge opportunity, and I want to begin my career in an environment driving cutting-edge industry 4.0 automation."*
+<details>
+<summary><b>Q1: Why GreyOrange?</b></summary>
+<br>
+<blockquote>
+<b>Answer:</b>
+"GreyOrange is a global leader in warehouse robotics and AI-powered automation. I am fascinated by how your hardware Ranger robots integrate with your GreyMatter software to solve real-time supply chain bottlenecks. Being a CSE student, working on enterprise-scale applications that impact global logistics is a huge opportunity, and I want to begin my career in an environment driving cutting-edge industry 4.0 automation."
+</blockquote>
+</details>
 
-### Q2: Why Software Support instead of Core Software Development?
-* **A**: *"I enjoy working close to the system level and solving real-time problems. Software Support is not just answering tickets; it's a mix of Systems Engineering, SRE, and Database operations. You get exposed to real production systems, Linux servers, database queries, and network configurations. Developers write code, but Support Engineers understand how code behaves in production. This practical exposure builds a very strong engineering foundation."*
+<details>
+<summary><b>Q2: Why Software Support instead of Core Software Development?</b></summary>
+<br>
+<blockquote>
+<b>Answer:</b>
+"I enjoy working close to the system level and solving real-time problems. Software Support is not just answering tickets; it's a mix of Systems Engineering, SRE, and Database operations. You get exposed to real production systems, Linux servers, database queries, and network configurations. Developers write code, but Support Engineers understand how code behaves in production. This practical exposure builds a very strong engineering foundation."
+</blockquote>
+</details>
 
-### Q3: The role involves 24x7 rotational shifts. Are you comfortable with this?
-* **A**: *"Yes, absolutely. I understand that GreyOrange operates globally, supporting clients across multiple time zones. I am highly adaptable, have good time management, and am fully comfortable working in rotational night/weekend shifts to ensure client operations run smoothly."*
-
-### Q4: How do you handle stressful situations or difficult clients?
-* **A**: *"I believe in staying calm and logical. When a system goes down or a client is upset, panic doesn't help. I first acknowledge the client's issue, assure them we are working on it, and immediately check logs and system metrics to isolate the root cause. Throughout the process, I keep the client updated with transparent communication. Clear communication reduces client anxiety during critical downtime."*
+<details>
+<summary><b>Q3: The role involves 24x7 rotational shifts. Are you comfortable with this?</b></summary>
+<br>
+<blockquote>
+<b>Answer:</b>
+"Yes, absolutely. I understand that GreyOrange operates globally, supporting clients across multiple time zones. I am highly adaptable, have good time management, and am fully comfortable working in rotational night/weekend shifts to ensure client operations run smoothly."
+</blockquote>
+</details>
 
 ---
 
 ## 👔 Part 4: Physical Prep & Checklist
-Ensure you look and feel professional.
 
 ### Dress Code (Strictly Formal)
 * **Gentlemen**: Solid light-colored formal shirt (white or light blue), dark formal trousers (navy, charcoal, or black), dark leather belt matching leather formal shoes, and a tie (optional but recommended). Clean-shaven or neatly trimmed beard.

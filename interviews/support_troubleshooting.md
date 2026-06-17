@@ -4,64 +4,54 @@ This guide details the structural and analytical mindset required for a Software
 
 ---
 
-## 🧠 Structured Troubleshooting Methodology
+## 📋 Collapsible Situation-Based Scenarios (Critical for Interviews)
 
-When asked, "How do you solve a technical issue?", do not just say "I search Google." Answer using this structured engineering framework:
+Please tap on any scenario below to view the exact 5-step investigation protocol.
 
-```mermaid
-graph TD
-    A["1. Identify the Problem<br>(What is broken?)"] --> B["2. Gather Data<br>(Logs, metrics, screenshots)"]
-    B --> C["3. Isolate the Cause<br>(Recreate in staging, isolate components)"]
-    C --> D["4. Formulate Action Plan<br>(Risk check, step-by-step fix)"]
-    D --> E["5. Implement & Verify<br>(Apply fix, verify services)"]
-    E --> F["6. Post-Mortem & SOP<br>(Document the fix to prevent recurrence)"]
-```
+<details>
+<summary><b>Scenario 1: Customer says: "Your application is not working." What do you do?</b></summary>
+<br>
+<blockquote>
+When a customer reports an application failure, I follow this 5-step protocol:
+<ol>
+  <li><b>Gather details:</b> Identify which module is failing, since when the issue started, how many users are affected, and whether any recent configurations or changes were deployed.</li>
+  <li><b>Check application logs:</b> Inspect log entries in real-time or search history using command lines like:
+    <pre><code>tail -100 app.log | grep ERROR</code></pre>
+  </li>
+  <li><b>Verify server health:</b> Check hardware and system metrics on the host:
+    <ul>
+      <li>CPU usage: <code>top</code> / <code>htop</code></li>
+      <li>Memory utilization: <code>free -m</code></li>
+      <li>Disk space: <code>df -h</code></li>
+    </ul>
+  </li>
+  <li><b>Check database connectivity:</b> Execute a quick and simple query to verify connection to the database:
+    <pre><code>SELECT 1;</code></pre>
+  </li>
+  <li><b>Maintain communication & escalate:</b> Update the customer every 15 minutes even if there is no fix yet. If the issue remains unresolved within the target SLA, escalate to L4 engineering.</li>
+</ol>
+</blockquote>
+</details>
 
----
-
-## 📋 High-Yield Scenario-Based Questions & Answers
-
-### Scenario 1: Database performance is slow. What will you check?
-* **A**: A slow database can freeze warehouse operations (e.g., robots waiting for sorting coordinates). I would investigate using these steps:
-  1. **Check DB Server Resources**: Log into the database server and check CPU and memory usage (`top`, `htop`, `free -m`). High CPU suggests intensive queries; high memory/swap usage suggests database buffer issues.
-  2. **Check Disk I/O**: Databases are disk-intensive. Run `iostat` or `iotop` to check if the disk read/write speeds are bottlenecking.
-  3. **Check Active Connections**: Verify if connection pools are exhausted.
-     * In PostgreSQL: `SELECT COUNT(*) FROM pg_stat_activity WHERE state = 'active';`
-     * In MySQL: `SHOW PROCESSLIST;` (checks for locked tables and sleeping connections).
-  4. **Analyze Slow Queries**: Review the database's slow query log. Identify queries taking long execution times.
-     * Check if these queries are missing **Indexes** (e.g. searching table without indexed foreign keys).
-     * Run `EXPLAIN ANALYZE <query>` to see the query execution plan.
-  5. **Check Network Latency**: Run `ping` from the application server to the database server to rule out network latency.
-
----
-
-### Scenario 2: Server is down / Application is unreachable. What steps do you take?
-* **A**: When a critical production server is reported down (P1 incident), I will follow a step-by-step diagnostic chain:
-  1. **Verify Connectivity (Outside-In)**:
-     * Check if the domain/IP resolves: `nslookup app.greyorange.com`.
-     * Test network reachability: `ping <IP_address>`.
-     * If ping fails, check routing hops: `traceroute <IP_address>` to find where packets drop.
-  2. **Check Port Listening**: Test if the web/application port is listening.
-     * Run `curl -I http://<IP_address>:<port>` or `nc -zv <IP_address> <port>`.
-  3. **Inspect Server Internals (Inside-Out)**:
-     * SSH into the server: `ssh user@server-ip`. (If SSH fails, the server hardware/hypervisor is likely crashed, requiring hosting platform escalation).
-     * Check process status: `ps aux | grep application_name`. If dead, attempt to start the daemon (e.g. `sudo systemctl start app`).
-     * Check disk space: `df -h`. If the root partition is 100% full, the application cannot write logs/sessions and will crash.
-     * Check memory usage: Run `free -m`. Check system logs (`/var/log/messages` or `dmesg | grep -i oom`) to see if the Linux Out-Of-Memory (OOM) Killer terminated the application process.
-  4. **Log Analysis**: Check the latest entries in `/var/log/syslog` or the application's specific error logs using `tail -n 100` and `grep "ERROR"`.
-
----
-
-### Scenario 3: A customer submits a ticket saying "Your application is not working." How do you handle it?
-* **A**: This is an underspecified issue. I would handle it using this structured communication and diagnosis flow:
-  1. **Acknowledge and Set Expectations**: Immediately reply to the customer. Acknowledge the ticket, express empathy, assign a ticket ID, and state that we are actively investigating.
-  2. **Gather Missing Details**: Polite requests for details:
-     * "What is the exact URL or page you are trying to access?"
-     * "Could you share a screenshot of the error message or browser console?"
-     * "Is this issue affecting all users in the warehouse, or only a specific terminal?"
-  3. **Check System Status**: While waiting for the user's reply, check our internal monitoring tools (like Grafana, Datadog) to verify if there are global alarms, high API error rates, or server alerts.
-  4. **Log Analysis & Reproduction**: Search logs for that user's ID or IP. Try to reproduce the steps in our staging/test environment.
-  5. **Resolution & Verification**: Once identified and fixed, update the customer: explain what happened (in non-technical, user-friendly language) and ask them to verify if the issue is resolved on their end before closing the ticket.
+<details>
+<summary><b>Scenario 2: Database is running slow. How will you investigate?</b></summary>
+<br>
+<blockquote>
+If database latency is high and lagging response times, I follow these 5 steps:
+<ol>
+  <li><b>Run slow query log analysis:</b> Check the database logs to identify queries taking more than 2 seconds to execute.</li>
+  <li><b>Examine query plan:</b> Use the explain command to check if indexes are being used or if the database is running sequential table scans:
+    <pre><code>EXPLAIN SELECT ...;</code></pre>
+  </li>
+  <li><b>Check server resources:</b> Inspect CPU, RAM, and disk read/write load on the database server using commands like:
+    <pre><code>htop</code>
+<code>iostat</code></pre>
+  </li>
+  <li><b>Inspect locks & transactions:</b> Look for active table locks, deadlocks, or long-running database transactions blocking other queries.</li>
+  <li><b>Report & recommend:</b> Put together a full diagnostics report and recommend adding necessary indexes or optimizing queries to the R&D/engineering team.</li>
+</ol>
+</blockquote>
+</details>
 
 ---
 
