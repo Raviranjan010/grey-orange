@@ -32,6 +32,7 @@ When a customer reports an application failure, I follow this 5-step protocol:
 </ol>
 </blockquote>
 </details>
+//
 
 <details>
 <summary><b>Scenario 2: Database is running slow. How will you investigate?</b></summary>
