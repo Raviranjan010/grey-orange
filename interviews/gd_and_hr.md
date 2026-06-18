@@ -4,6 +4,7 @@ Day 1 of the GreyOrange drive (June 23) starts with the Pre-Placement Talk follo
 
 ---
 
+
 ## 🍊 Part 1: GreyOrange & Warehouse Automation Terminology
 *Tip: Weaving these terms into your GD or technical rounds will immediately set you apart from other candidates.*
 
