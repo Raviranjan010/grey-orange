@@ -22,18 +22,22 @@ Welcome! This repository has been structured specifically for you to clear the c
 ## 📁 Repository Guide: Study Materials & Roadmaps
 Use the links below to access detailed prep notes, commands, practice queries, and scenarios:
 
-### 1. 📅 [Daily Prep Roadmap (June 17 - 23)](file:///d:/Temp/grey-orange/roadmap/daily_prep_schedule.md)
+### 1. 📅 [Daily Prep Roadmap (June 17 - 23)](file:///D:/Temp/grey-orange/roadmap/daily_prep_schedule.md)
 * A step-by-step, day-by-day plan of action to organize your study hours.
 
-### 2. 💻 Technical Guides
-* 🐧 **[Linux Prep Guide](file:///d:/Temp/grey-orange/technical/linux_guide.md)**: File operations, permissions, process metrics, log analysis, SSH, and 30+ Q&As.
-* 🗄️ **[SQL Query Guide](file:///d:/Temp/grey-orange/technical/sql_guide.md)**: Joins (Inner, Outer, Left, Right), Group By, text search (LIKE), exporting CSVs, and practice queries.
-* 🌐 **[OS & Networking Guide](file:///d:/Temp/grey-orange/technical/os_networking_guide.md)**: Process vs Threads, CPU/Memory commands, OSI layers, TCP/UDP, DNS, HTTP/S, and CLI tools.
-* 🐍 **[Programming & Scripting Guide](file:///d:/Temp/grey-orange/technical/programming_dsa_guide.md)**: Python basics, automation scripts for files and logs, exception handling, and basic DSA.
+### 2. ⚡ [Master Cheat Sheet — Last Hour Revision](file:///D:/Temp/grey-orange/technical/master_cheat_sheet.md)
+* Quick summary of Linux commands, SQL queries, OS/Networking terms, Python snippets, and company facts.
 
-### 3. 👥 Behavioral & Process Guides
-* 🛠️ **[Support & Troubleshooting Scenarios](file:///d:/Temp/grey-orange/interviews/support_troubleshooting.md)**: Step-by-step methods for troubleshooting slow databases, crashed servers, and customer conflict resolution.
-* 💬 **[GD & HR Interview Guide](file:///d:/Temp/grey-orange/interviews/gd_and_hr.md)**: Self-introduction script, GD templates and talking points (AI/Robotics/Automation), HR questions (shifts, relocation, career), and mandatory drive documents.
+### 3. 💻 Technical Guides
+* 🐧 **[Linux Prep Guide](file:///D:/Temp/grey-orange/technical/linux_guide.md)**: File operations, permissions, process metrics, log analysis, SSH, and 30 Q&As.
+* 🗄️ **[SQL Query Guide](file:///D:/Temp/grey-orange/technical/sql_guide.md)**: Joins, Group By, logical query order, indexing, and 20 query bank.
+* 🌐 **[OS & Networking Guide](file:///D:/Temp/grey-orange/technical/os_networking_guide.md)**: OSI model, TCP vs UDP, DNS workflow, SSL/TLS handshake, and network CLI tools.
+* 🐍 **[Programming & Scripting Guide](file:///D:/Temp/grey-orange/technical/programming_dsa_guide.md)**: Python basics, exception handling, data complexities, and 10 DSA solutions.
+
+### 4. 👥 Process & Interview Guides
+* 🏢 **[Pre-Placement Talk (PPT) Guide](file:///D:/Temp/grey-orange/interviews/ppt_guide.md)**: Essential facts to listen for, note-taking strategies, and high-impact questions to ask the panel.
+* 🛠️ **[Support & Troubleshooting Scenarios](file:///D:/Temp/grey-orange/interviews/support_troubleshooting.md)**: 5-step protocols for CPU, disk, database, server and network outages, SLA matrices, and emails.
+* 💬 **[GD & HR Interview Guide](file:///D:/Temp/grey-orange/interviews/gd_and_hr.md)**: Self-introduction script, GD master class (scripts for opening, bridging, and pivoting), 6 GD topic templates, and HR questions.
 
 ---
 
