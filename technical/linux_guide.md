@@ -1,342 +1,419 @@
-# 🐧 Linux Systems & Operations: Comprehensive Study Guide
+# 🐧 Linux Systems & Operations — COMPLETE Study Guide
+### GreyOrange Software Support Engineer Intern | Drive: June 23-24, 2026
 
-In a Software Support Engineer role at GreyOrange, Linux is your primary environment. You will be troubleshooting warehouse software, checking system health, reading logs, and writing scripts on Linux servers.
+> **Weight in Interview**: 45% | **Priority**: HIGHEST  
+> All ⭐ marked items were confirmed asked in 2025 batch interviews.
 
 ---
 
-## 📂 Part 1: Linux File System Hierarchy
+## PART 1: Linux File System Hierarchy
 
-Understanding where files live is crucial. Here is a directory map:
+Understanding where files live is crucial. Here is a directory map of a typical Linux system:
 
-| Directory | Name / Purpose | Support Context |
+| Directory | Purpose | Support Context |
 |---|---|---|
-| **`/`** | **Root Directory** | The starting point of the directory tree. All folders branch from here. |
-| **`/etc`** | **Configuration Files** | Stores system and application config files (e.g. database configs, network configs). |
-| **`/var`** | **Variable Data** | Stores files that change size frequently, such as databases and mail. |
-| **`/var/log`** | **System & App Logs** | **Primary Troubleshooting Location**. Contains `syslog`, `auth.log`, and app-specific logs. |
-| **`/bin` & `/sbin`** | **Binaries (Executable programs)** | Contains system commands like `ls`, `ping`, and administrative commands like `ifconfig`. |
-| **`/proc`** | **Process Information** | A virtual filesystem containing details about running processes and kernel statistics. |
-| **`/tmp`** | **Temporary Files** | Used by applications to store temporary data. Files are usually cleared on reboot. |
-| **`/home`** | **User Home Directories** | Personal storage for normal users (e.g., `/home/ravish`). |
-| **`/root`** | **Superuser Home** | Home directory of the root user (administrator). |
+| **`/`** | Root — all folders branch from here | Starting point of the system directory tree. |
+| **`/etc`** | Configuration files | DB configs (`postgresql.conf`), network configs, service scripts. |
+| **`/var`** | Variable data | Databases, mail queues, and dynamically changing files. |
+| **`/var/log`** | System & App Logs | **PRIMARY troubleshooting location**. Look here first. |
+| **`/bin` & `/sbin`** | Binary executables | Standard system commands (`ls`, `ping`, `ifconfig`, `reboot`). |
+| **`/proc`** | Virtual filesystem | Kernel state and processes represented as files (`/proc/cpuinfo`). |
+| **`/tmp`** | Temporary files (cleared on reboot) | Storage for temp scripts, locks, and temporary run data. |
+| **`/home`** | User home directories | Personal workspace directory for normal users (e.g. `/home/ravi`). |
+| **`/root`** | Superuser home | Admin/root workspace directory. |
+| **`/opt`** | Optional/third-party software | Location where enterprise applications and robot drivers are installed. |
+| **`/usr`** | User system resources | Shared libraries, system binaries, and read-only user data. |
+| **`/dev`** | Device files | System hardware interfaces (e.g. `/dev/sda` for disk, `/dev/null`). |
 
 ---
 
-## 🛠️ Command Flag Matrix (Must Know for Screenings)
+## PART 2: Command Flag Master Matrix
 
-Support engineers must know how to modify commands using flags.
+Support engineers must know how to modify commands using flags to parse large volumes of system data.
 
-| Command | Flag | Meaning | Use Case Example |
-|---|---|---|---|
-| **`ls`** | `-l` | Long listing format | `ls -l` (Displays permissions, owner, size, and date) |
-| | `-a` | All files (includes hidden) | `ls -a` (Lists files starting with `.`, like `.bashrc`) |
-| | `-h` | Human-readable sizes | `ls -lh` (Shows file sizes in KB, MB, GB instead of bytes) |
-| | `-t` | Sort by time modified | `ls -lt` (Shows recently modified files first) |
-| **`grep`** | `-i` | Case-insensitive | `grep -i "error" app.log` (Finds Error, error, ERROR) |
-| | `-v` | Invert match (exclude) | `grep -v "DEBUG" app.log` (Hides debug logs, showing only errors/info) |
-| | `-rn` | Recursive, line numbers | `grep -rn "connection failed" /var/log/` (Finds text in all subfiles) |
-| | `-c` | Count matching lines | `grep -c "Exception" app.log` (Returns total number of exceptions) |
-| | `-A <N>` | Show $N$ lines **After** match | `grep -A 5 "NullPointerException" app.log` (Prints stack trace after error) |
-| | `-B <N>` | Show $N$ lines **Before** match | `grep -B 3 "Timeout" app.log` (Shows event preceding the timeout) |
-| **`tail`** | `-n <N>` | Print last $N$ lines | `tail -n 50 app.log` (Shows last 50 lines) |
-| | `-f` | Follow file in real-time | `tail -f /var/log/syslog` (Monitors incoming logs live) |
-| **`find`** | `-name` | Find by name pattern | `find /var/log -name "*.log"` (Finds all log files in directory) |
-| | `-size` | Find by file size | `find . -size +100M` (Finds files larger than 100 Megabytes) |
-| | `-mtime` | Find by modification time | `find . -mtime -2` (Finds files modified in the last 2 days) |
+### `ls` — List Directory Contents
+| Flag | Meaning | Example |
+|---|---|---|
+| `-l` | Long listing (permissions, owner, size, date) | `ls -l` |
+| `-a` | All files including hidden (starting with `.`) | `ls -a` (displays `.bashrc`) |
+| `-h` | Human-readable sizes (KB, MB, GB instead of bytes) | `ls -lh` |
+| `-t` | Sort by time modified (newest first) | `ls -lt` |
+| `-S` | Sort by file size (largest first) | `ls -lhS` |
+| `-R` | Recursive listing of all subdirectories | `ls -R /var/log` |
+
+### `grep` — Search Text in Files
+| Flag | Meaning | Example |
+|---|---|---|
+| `-i` | Case-insensitive search | `grep -i "error" app.log` |
+| `-v` | Invert match (exclude lines containing keyword) | `grep -v "DEBUG" app.log` |
+| `-rn` | Recursive search with line numbers | `grep -rn "timeout" /var/log/` |
+| `-c` | Count matching lines | `grep -c "Exception" app.log` |
+| `-A N` | Show N lines **After** match (context) | `grep -A 5 "NullPointer" app.log` |
+| `-B N` | Show N lines **Before** match (context) | `grep -B 3 "Timeout" app.log` |
+| `-l` | Print only filenames containing matches | `grep -rl "ERROR" /var/log/` |
+| `-w` | Match whole word only | `grep -w "fail" app.log` |
+
+### `find` — Search for Files
+| Flag | Meaning | Example |
+|---|---|---|
+| `-name` | Match by filename pattern | `find /var/log -name "*.log"` |
+| `-size` | Find files matching size threshold | `find . -size +100M` (files > 100MB) |
+| `-mtime` | Modified in the last N days | `find . -mtime -2` (last 48 hours) |
+| `-type f` | Search for files only | `find /etc -type f` |
+| `-type d` | Search for directories only | `find /var -type d` |
+
+### `tail` & `head` — File Snippets
+| Command | Meaning | Example |
+|---|---|---|
+| `tail -n N file` | Print last N lines of a file | `tail -n 50 app.log` |
+| `tail -f file` | Follow file modifications in real-time | `tail -f /var/log/syslog` |
+| `head -n N file` | Print first N lines of a file | `head -n 20 app.log` |
 
 ---
 
-## ⭐ Confirmed 2025 Batch Interview Commands & DCS Material
-These 6 commands were explicitly asked in the GreyOrange interviews for the 2025 batch. Memorize these formulas.
+## PART 3: ⭐ DCS-Confirmed Interview Commands (MEMORIZE ALL 6)
 
-### 1. ⭐ `tail -10 logfile.log`
+These six commands were confirmed as explicitly asked in the 2025 batch interviews. Memorize their syntax and context:
+
+### ⭐ 1. `tail -10 logfile.log`
 * **Purpose**: Show the last 10 lines of a log file.
-* **Troubleshooting context**: Quickly inspects the latest error message generated by a system crash.
+* **Support Context**: Used to inspect the latest error or stack trace written right before an application crashed.
 
-### 2. ⭐ `scp file.txt user@host:/path`
-* **Purpose**: Securely copy a file to a remote server.
-* **Troubleshooting context**: Used to pull logs from a production server to your local machine for analysis, or transfer a patch script.
-* **Mnemonic**: Think of `scp` as "Secure `cp` (copy)". Syntax format: `scp [source] [destination]`.
+### ⭐ 2. `scp file.txt user@host:/path`
+* **Purpose**: Securely copy file to/from a remote server.
+* **Support Context**: Transfers logs from production nodes to a local machine for analysis, or uploads patches.
+* **Syntax**: `scp [source] [destination]`. Add `-r` to copy directories recursively: `scp -r /var/log/ ravi@server:/backup/`
 
-### 3. ⭐ `chmod +x filename`
-* **Purpose**: Add execute permission (`+x`) to a file, making it a runnable script.
-* **Troubleshooting context**: Run when you write a custom Python or Bash script to automate system checks and need to make it executable.
+### ⭐ 3. `chmod +x filename`
+* **Purpose**: Add execute permission to make a script runnable.
+* **Support Context**: Run when automating checks using a custom Shell or Python script.
+* **Usage**: `chmod +x health_check.sh` followed by `./health_check.sh`.
 
-### 4. ⭐ `chown user filename`
-* **Purpose**: Change the owner of a file.
-* **Troubleshooting context**: Resolves "Permission Denied" errors when an application process cannot write to a file because it is owned by `root`.
-* **Example**: `sudo chown greyuser /var/log/app.log` allows the `greyuser` application account to write logs.
+### ⭐ 4. `chown user filename`
+* **Purpose**: Change ownership of a file.
+* **Support Context**: Fixes "Permission Denied" errors when an application runs under a specific user and cannot write to log or database directories.
+* **Usage**: `sudo chown greyuser /var/log/app.log` or `sudo chown greyuser:greygroup /var/log/app.log` (user:group).
 
-### 5. ⭐ `free -m`
-* **Purpose**: Check RAM usage in Megabytes.
-* **Troubleshooting context**: Checks for memory leaks. Look at the `available` column (not just `free`, as Linux uses unused memory for disk caching, which is freed automatically when needed).
+### ⭐ 5. `free -m`
+* **Purpose**: Check system memory (RAM) in Megabytes.
+* **Support Context**: Look at the **"available"** column rather than "free". Linux utilizes unused RAM for buffer cache, which is automatically freed when applications request it.
 
-### 6. ⭐ `htop` / `top`
-* **Purpose**: Real-time process monitor.
-* **Troubleshooting context**: Identifying CPU spikes. `htop` is preferred as it is interactive, supports mouse inputs, displays CPU cores individually, and allows killing processes by selecting them and pressing `F9`.
+### ⭐ 6. `htop` / `top`
+* **Purpose**: Real-time process and system resource monitor.
+* **Support Context**: Debugs CPU spikes. `htop` is preferred as it is interactive, visualizes individual cores, allows sorting (Shift+P for CPU, Shift+M for memory), and supports process termination using `F9` (kill).
 
 ---
 
-## 🔒 File Permissions & Numeric Trick Sheet
+## PART 4: File Permissions — The 4-2-1 Rule
 
-In Linux terminal outputs (`ls -l`), permission strings look like: `-rwxr-xr-x`.
-* **First character**: File type (`-` = regular file, `d` = directory, `l` = symbolic link).
-* **Next 9 characters**: Three sets of permissions: User (owner), Group, and Others.
+File permissions in directory listings (`ls -l`) look like: `-rwxr-xr--`
+The first character is the type (`-` = file, `d` = directory, `l` = link). The next 9 characters represent three sets of permissions: User (owner), Group, and Others.
 
 ```
-Type  User(Owner)   Group       Others
- -     r w x         r - x       r - -
-       4 2 1         4 0 1       4 0 0
-       ─────         ─────       ─────
-       Sum: 7        Sum: 5      Sum: 4
+Type  User(Owner)  Group      Others
+-      r w x        r - x      r - -
+       4+2+1=7      4+0+1=5    4+0+0=4    =>  chmod 754
 ```
 
-### The 4-2-1 Permission Rule
+### The Binary Value Mapping:
 * **Read (r)** = 4
 * **Write (w)** = 2
 * **Execute (x)** = 1
 * **No Permission (-)** = 0
 
-* **Trick**: To calculate any numeric permission, add up the numbers of active letters.
-  * **7** (4+2+1) $\rightarrow$ Full permissions (`rwx`)
-  * **6** (4+2+0) $\rightarrow$ Read and Write (`rw-`)
-  * **5** (4+0+1) $\rightarrow$ Read and Execute (`r-x`)
-  * **4** (4+0+0) $\rightarrow$ Read-Only (`r--`)
-
-### Common Permissions Reference Table:
-| Numeric | Symbolic | Common Usage | Safety Level |
+### Common Permission Patterns:
+| Numeric | Symbolic | Use Case | Safety / Access |
 |---|---|---|---|
-| **`777`** | `rwxrwxrwx` | Everyone can read, write, and execute. | **Extremely Dangerous** (never use in production). |
-| **`755`** | `rwxr-xr-x` | Owner has full access; others can read and run it. | Standard for scripts and executables. |
-| **`644`** | `rw-r----` | Owner can edit; others can only read. | Standard for configuration files and logs. |
-| **`600`** | `rw-------` | Only owner can read and edit; others blocked. | Used for sensitive files like SSH private keys. |
+| **777** | `rwxrwxrwx` | Full access for everyone | **NEVER in production**. Extremely dangerous security risk. |
+| **755** | `rwxr-xr-x` | Owner has full; Group/Others can read/execute | Standard for executable shell/python scripts. |
+| **644** | `rw-r--r--` | Owner can edit; Group/Others can read | Standard for configuration files and static logs. |
+| **600** | `rw-------` | Only owner can read/edit; others blocked | Mandatory for private files like SSH private keys (`id_rsa`). |
+| **400** | `r--------` | Only owner can read; all edits blocked | Used for highly sensitive read-only credentials or keys. |
+
+### Symbolic Changes:
+* `chmod u+x file`     # Add execute permission for owner
+* `chmod g-w file`     # Remove write permission for group
+* `chmod o=r file`     # Set others permission to read-only
+* `chmod a+r file`     # Add read permission for ALL (User, Group, Others)
 
 ---
 
-## ⚙️ I/O Redirection & Pipe Operators
+## PART 5: I/O Redirection & Pipes
 
-Redirection commands allow support engineers to route logs, create report files, and filter command outputs.
+Redirection lets you capture logs, clean outputs, and write automation scripts.
 
-* **`>` (Overwrite)**: Redirects standard output of a command to a file, overwriting existing content.
-  * *Example*: `echo "System Check Passed" > status.txt`
-* **`>>` (Append)**: Redirects output to a file, appending it to the end without deleting existing content.
-  * *Example*: `echo "Check at $(date)" >> status.txt`
-* **`2>` (Redirect Standard Error)**: Routes only the error output of a command to a separate file.
-  * *Example*: `run_backup.sh 2> backup_errors.log`
-* **`&>` (Redirect All Output)**: Routes both standard output and standard error to the same file.
-  * *Example*: `cleanup_script.sh &> cleanup.log`
-* **`|` (Pipe)**: Feeds the output of the left command as the input to the right command.
-  * *Example*: `ps aux | grep java | wc -l` (Finds running java processes and counts how many lines are returned).
+| Operator | Action | Example |
+|---|---|---|
+| **`>`** | Overwrite stdout to file | `echo "Active" > status.txt` |
+| **`>>`** | Append stdout to file | `echo "$(date)" >> status.txt` |
+| **`2>`** | Redirect stderr only | `script.sh 2> errors.log` |
+| **`&>`** | Redirect stdout AND stderr | `script.sh &> full.log` |
+| **`\|`** | Feed stdout of left cmd as stdin to right cmd | `ps aux \| grep java \| wc -l` |
+| **`/dev/null`**| Discard output (black hole) | `noisy_cmd &> /dev/null` |
 
----
-
-## 📂 Advanced Log-Parsing Recipes (Support Field Guide)
-
-As a support engineer, you will deal with massive log files. Running `cat` on a 5GB file will freeze the server. Use these recipes:
-
-### Recipe 1: Handle Compressed (Rotated) Logs
-Linux systems compress old log files to save space, appending `.gz` (e.g. `app.log.1.gz`). Standard `grep` won't work on them.
-* **Solution**: Use **`zgrep`** and **`zcat`** (performs search directly on compressed binary without extracting it first).
-  * `zgrep -i "exception" /var/log/app.log.1.gz`
-  * `zcat /var/log/app.log.1.gz | head -100`
-
-### Recipe 2: Extract Error Stack Trace
-An error message like `NullPointerException` is followed by 10-20 lines showing *where* in the code it happened (the stack trace). Legitimate debugging requires seeing those lines.
-* **Solution**: Use `-A` (After) flag.
-  * `grep -n -A 20 "NullPointerException" app.log` (Prints the exception line and the next 20 lines of stack trace).
-
-### Recipe 3: Search for Events within a Time Range
-If a customer reports a database timeout at 14:30:15, you must look at logs around that time.
-* **Solution**: Use `grep` with regex or `sed`.
-  * `sed -n '/14:30:00/,/14:35:00/p' app.log` (Extracts and prints all lines between 14:30:00 and 14:35:00).
+### Power Pipe Combos:
+* **Count ERROR lines**: `grep -c "ERROR" app.log`
+* **Find top 10 largest directories**: `du -sh /var/log/* | sort -rh | head -10`
+* **Identify port owner**: `lsof -i :8080`
+* **Live filter logs**: `tail -f app.log | grep --line-buffered "ERROR"`
+* **Deduplicate and count unique IPs**: `awk '{print $1}' access.log | sort | uniq -c | sort -rn | head -20`
 
 ---
 
-## ▾ Expandable Core Commands Q&A
+## PART 6: Advanced Log-Parsing Recipes
 
-Please tap on any question below to expand its detailed answer.
+Use these recipes in high-stress production environments:
 
-<details>
-<summary><b>Q1: What is the basic difference between Linux and Unix?</b></summary>
-<br>
-<blockquote>
-<b>Answer:</b> 
-<ul>
-  <li><b>Linux is a Kernel</b>: It is free and open-source, created by Linus Torvalds in 1991. It is combined with GNU utilities to form full operating systems called distributions (e.g., Ubuntu, CentOS, Red Hat). It runs on almost any hardware (PC, servers, Raspberry Pi).</li>
-  <li><b>Unix is a Full Operating System</b>: Developed by AT&T Bell Labs in the late 1960s, it is closed-source, proprietary, and usually runs on specific hardware architectures (e.g., IBM AIX, Oracle Solaris, HP-UX).</li>
-  <li><b>Summary</b>: UNIX is a proprietary OS family, while Linux is an open-source kernel used to build free operating systems.</li>
-</ul>
-</blockquote>
-</details>
+### Recipe 1: Search Compressed (Rotated) Logs
+Standard logs are rotated and compressed (ending in `.gz`) to save disk space.
+```bash
+zgrep -i "exception" /var/log/app.log.1.gz
+zcat /var/log/app.log.1.gz | head -100
+```
 
-<details>
-<summary><b>Q2: How do you check running processes on a Linux machine?</b></summary>
-<br>
-<blockquote>
-<b>Answer:</b>
-<ul>
-  <li>Use <code>ps aux</code> to get a detailed snapshot of all running processes on the system:
-    <ul>
-      <li><code>a</code> = show processes for all users.</li>
-      <li><code>u</code> = display user/owner details.</li>
-      <li><code>x</code> = show processes not attached to a terminal.</li>
-    </ul>
-  </li>
-  <li>To find a specific process (e.g., a Python app), pipe it to grep: <code>ps aux | grep python</code>.</li>
-  <li>For real-time interactive monitoring, use <code>top</code> or <code>htop</code>.</li>
-</ul>
-</blockquote>
-</details>
+### Recipe 2: Extract Full Stack Trace Context
+To troubleshoot code exceptions, look at the lines immediately following the error.
+```bash
+grep -n -A 20 "NullPointerException" app.log
+```
 
-<details>
-<summary><b>Q3: How do you search for specific text inside a file?</b></summary>
-<br>
-<blockquote>
-<b>Answer:</b>
-By using the <code>grep</code> command (Global Regular Expression Print).
-<ul>
-  <li><b>Basic Search</b>: <code>grep "ERROR" app.log</code></li>
-  <li><b>Case-Insensitive</b>: <code>grep -i "exception" app.log</code> (finds Exception, exception, EXCEPTION).</li>
-  <li><b>Show Line Numbers</b>: <code>grep -n "failed" transaction.log</code>.</li>
-  <li><b>Recursive Search</b>: <code>grep -r "NullPointerException" /var/log/app/</code> (searches all files inside the folder).</li>
-  <li><b>Count Matches</b>: <code>grep -c "timeout" app.log</code> (returns the count of lines containing the term).</li>
-  <li><b>After Context</b>: <code>grep -A 10 "fatal" app.log</code> (prints matching line + next 10 lines).</li>
-</ul>
-</blockquote>
-</details>
+### Recipe 3: Extract Events in specific Time Range
+```bash
+sed -n '/14:30:00/,/14:35:00/p' app.log
+```
 
-<details>
-<summary><b>Q4: What are aliases in Linux? How do you make an alias persistent for all users?</b></summary>
-<br>
-<blockquote>
-<b>Answer:</b>
-An alias is a customized shortcut for a long or frequently used command.
-<ul>
-  <li><b>Temporary Alias</b>: <code>alias ll='ls -la'</code> (lasts only for the current terminal session).</li>
-  <li><b>Persistent for One User</b>: Add the alias definition to the user's <code>~/.bashrc</code> file, then run <code>source ~/.bashrc</code>.</li>
-  <li><b>Persistent System-Wide (All Users)</b>: 
-    <ol>
-      <li>Open the system-wide configuration file using sudo: <code>sudo nano /etc/bash.bashrc</code> (on Debian/Ubuntu) or <code>sudo nano /etc/profile</code>.</li>
-      <li>Append the alias at the end: <code>alias mycommand='actual_long_command'</code>.</li>
-      <li>Save and exit (Ctrl+O, Enter, Ctrl+X in nano).</li>
-      <li>Apply changes: <code>source /etc/bash.bashrc</code>.</li>
-    </ol>
-  </li>
-</ul>
-</blockquote>
-</details>
-
-<details>
-<summary><b>Q5: How do you check available disk space on a Linux server?</b></summary>
-<br>
-<blockquote>
-<b>Answer:</b>
-<ul>
-  <li><b>For Filesystems</b>: Use <code>df -h</code> (Disk Free, Human-readable). It displays the total, used, available, and usage percentage of all mounted partitions.
-    <ul>
-      <li><i>Critical flag</i>: <code>-h</code> shows sizes in GB/MB instead of blocks.</li>
-    </ul>
-  </li>
-  <li><b>For Specific Directories</b>: Use <code>du -sh /path/to/folder</code> (Disk Usage, Summary, Human-readable). Shows the size of a specific folder and its contents.
-    <ul>
-      <li>To find which folder is consuming the most space in the current directory: <code>du -sh * | sort -h</code>.</li>
-    </ul>
-  </li>
-</ul>
-</blockquote>
-</details>
-
-<details>
-<summary><b>Q6: What does chmod 755 mean? Explain the number logic.</b></summary>
-<br>
-<blockquote>
-<b>Answer:</b>
-In Linux, file permissions are divided into 3 sets of users, represented by 3 digits:
-<ol>
-  <li><b>First Digit (7)</b>: Owner (User who created the file).</li>
-  <li><b>Second Digit (5)</b>: Group (Users belonging to the file's group).</li>
-  <li><b>Third Digit (5)</b>: Others (Everyone else on the system).</li>
-</ol>
-Permissions have numeric values:
-<ul>
-  <li><b>Read (r)</b> = 4</li>
-  <li><b>Write (w)</b> = 2</li>
-  <li><b>Execute (x)</b> = 1</li>
-</ul>
-Adding these values creates the permission digits:
-<ul>
-  <li><code>7</code> = 4 + 2 + 1 $\rightarrow$ <b>Read, Write, and Execute (rwx)</b>.</li>
-  <li><code>5</code> = 4 + 0 + 1 $\rightarrow$ <b>Read and Execute (r-x)</b>.</li>
-  <li><code>4</code> = 4 + 0 + 0 $\rightarrow$ <b>Read-Only (r--)</b>.</li>
-</ul>
-Therefore, <b><code>chmod 755 filename</code></b> gives the owner full access (read, write, execute) and allows the group and others to only read and execute the file.
-</blockquote>
-</details>
-
-<details>
-<summary><b>Q7: A server's CPU utilization suddenly spikes to 100%. What are your first 5 troubleshooting steps?</b></summary>
-<br>
-<blockquote>
-<b>Answer:</b>
-If the CPU hits 100% capacity, I will isolate and resolve it using these steps:
-<ol>
-  <li><b>Identify the Offending Process</b>: Run <code>top</code> or <code>htop</code> and press <code>Shift + P</code> (in top) to sort processes by CPU utilization. Identify the process ID (PID) and the command running it.</li>
-  <li><b>Analyze the Process</b>: Check if it is a legitimate system application (e.g., a database index run) or a stuck/runaway user script (e.g., an infinite loop in Python).</li>
-  <li><b>Investigate Open Threads and Logs</b>: Check what files the process is accessing using <code>lsof -p <PID></code>, and inspect the application logs for infinite loops or massive data-dumping exceptions.</li>
-  <li><b>Graceful Terminate</b>: If it is a runaway process that needs to stop, attempt to terminate it gracefully: <code>kill -15 <PID></code> (SIGTERM). This allows the application to save states and close files.</li>
-  <li><b>Force Kill (If Unresponsive)</b>: If the process refuses to stop and is endangering server stability, terminate it instantly: <code>kill -9 <PID></code> (SIGKILL). Report the issue to R&D or systems leads with the logged process details.</li>
-</ol>
-</blockquote>
-</details>
-
-<details>
-<summary><b>Q8: Server is down or unresponsive. What steps will you take?</b></summary>
-<br>
-<blockquote>
-<b>Answer:</b>
-When a production server goes down or becomes unresponsive, I follow this diagnostic flow:
-<ol>
-  <li><b>Test Connectivity</b>: Run <code>ping server-ip</code>. If ping works, the network path is open, and the issue is likely application-specific. If ping fails, run <code>traceroute server-ip</code> to find where the connection is dropping.</li>
-  <li><b>Check Service Ports</b>: Check if the application port (e.g., 80, 443, 8080) is responding: <code>nc -zv server-ip port</code> or <code>curl -I http://server-ip:port</code>.</li>
-  <li><b>Inspect System Resources</b>: SSH into the server (if accessible) and check resource limits:
-    <ul>
-      <li>Disk full: <code>df -h</code> (If disk is 100% full, the database and app will freeze).</li>
-      <li>Memory exhaustion: <code>free -m</code>. Check system messages for memory terminations: <code>dmesg | grep -i oom</code>.</li>
-    </ul>
-  </li>
-  <li><b>Verify Application Status</b>: Check if the service is running: <code>sudo systemctl status service-name</code> or <code>ps aux | grep application</code>. Try restarting the service if stopped: <code>sudo systemctl restart service-name</code>.</li>
-  <li><b>Analyze Logs</b>: Review logs in <code>/var/log/syslog</code> or application logs: <code>tail -n 100 /var/log/nginx/error.log</code>.</li>
-</ol>
-</blockquote>
-</details>
+### Recipe 4: Real-time Error Monitoring with Pipes
+```bash
+tail -f /var/log/app.log | grep --line-buffered -i "error\|fatal"
+```
 
 ---
 
-## 📝 Practice Linux Exercises (Q&A)
+## PART 7: System Health Commands
 
-### Q1: How do you search for files modified exactly 3 days ago?
-* **A**: Use `find` with the `-mtime` flag:
-  `find /path/to/search -type f -mtime 3`
-  * `-mtime 3` means exactly 3 days ago.
-  * `-mtime -3` means less than 3 days ago (last 72 hours).
-  * `-mtime +3` means more than 3 days ago.
+### CPU & Processes
+* `top`                         # Interactive monitor (Shift+P sorts by CPU)
+* `htop`                        # Modern interactive monitor
+* `ps aux`                      # Snapshot of all processes
+* `ps aux | grep python`        # Filter for Python scripts
+* `uptime`                      # System uptime and load averages (1, 5, 15 minutes)
+* `nproc`                       # Print number of CPU cores available
 
-### Q2: How do you check which user opened port 8080?
-* **A**: Combine `lsof` (list open files) and `ps`:
-  `lsof -i :8080`
-  This will print the PID and USER of the process listening on port 8080. You can then run `ps -u -p PID` to see the details.
+### Memory (RAM)
+* `free -m`                     # RAM in Megabytes
+* `free -h`                     # RAM in human-readable format
+* `dmesg | grep -i oom`         # Scan system logs for Out-Of-Memory kills
+* `vmstat 1 5`                  # Memory, swap, and system resource statistics every 1s
 
-### Q3: What is the difference between `soft link` and `hard link`?
-* **A**:
-  * **Soft Link (Symbolic Link)**: A path pointer. It contains the path to another file. If the original file is deleted, the soft link becomes a "broken link" and points to nothing. Created using `ln -s source target`.
-  * **Hard Link**: A direct reference to the file's raw disk sectors (inode). If the original filename is deleted, the file data still exists on disk, and the hard link will successfully open it. Created using `ln source target`. Hard links cannot span different filesystems or point to directories.
+### Disk I/O & Storage
+* `df -h`                       # Disk space usage on mounted filesystems
+* `df -i`                       # Free Inode counts (if inodes are 100% full, no new files can be written)
+* `du -sh /var/log/`            # Total size of a directory
+* `du -sh /var/log/* | sort -h` # Sort folder items by size
+* `lsblk`                       # List block devices (disks, partitions)
+* `iostat`                      # Disk input/output statistics
 
-### Q4: How do you write a cron expression to execute a script every hour?
-* **A**: Open the editor with `crontab -e` and append:
-  `0 * * * * /path/to/script.sh`
-  * Structure of a cron expression: `minute hour day_of_month month day_of_week`. Setting minute to `0` and hour to `*` ensures execution at the top of every hour.
+### Network Connectivity
+* `ip addr show`                # Display IP addresses and interfaces
+* `ss -tulnp`                   # Modern active listening ports with PIDs
+* `netstat -tulnp`              # Legacy active ports with PIDs
+* `ping 8.8.8.8`                # Test Layer 3 connectivity
+* `traceroute 8.8.8.8`          # Trace network routing hops
+* `nc -zv host 3306`            # Test port TCP connection (Netcat)
+* `curl -I https://google.com`  # Fetch HTTP headers
+* `dig greyorange.com`          # DNS details lookup
 
-### Q5: How do you list files sorted by file size?
-* **A**: Use the `ls` command with `-S` flag:
-  `ls -lhS`
-  * `-S` sorts by size (largest first). `-lh` displays sizes in a human-readable format.
+---
+
+## PART 8: SSH & Remote Operations
+
+* **Standard Login**: `ssh username@192.168.1.100`
+* **Custom Port**: `ssh -p 2222 username@host`
+* **Local to Remote copy**: `scp local_file.txt user@host:/remote/path/`
+* **Remote to Local copy**: `scp user@host:/remote/file.txt ./local/`
+* **Key Generation**: `ssh-keygen -t rsa -b 4096`
+* **Passwordless Setup**: `ssh-copy-id user@host` (copies public key to remote host)
+* **Execute remote command**: `ssh user@host "df -h && free -m"`
+
+---
+
+## PART 9: Service Management (`systemctl`)
+
+* `sudo systemctl status nginx`           # Check service status
+* `sudo systemctl start nginx`            # Start service
+* `sudo systemctl stop nginx`             # Stop service
+* `sudo systemctl restart nginx`          # Restart service
+* `sudo systemctl reload nginx`           # Reload config without terminating connection
+* `sudo systemctl enable nginx`           # Enable start-on-boot
+* `sudo journalctl -u nginx -n 100`       # View last 100 logs for Nginx service
+* `sudo journalctl -u nginx -f`           # Live follow service logs
+
+---
+
+## PART 10: Cron Jobs (Scheduled Tasks)
+
+* `crontab -e`              # Edit cron configuration
+* `crontab -l`              # List scheduled cron jobs
+
+Syntax format:
+`minute  hour  day_of_month  month  day_of_week  command`
+
+| Expression | Meaning |
+|---|---|
+| `0 * * * *` | Every hour at minute 0 |
+| `*/15 * * * *` | Every 15 minutes |
+| `0 2 * * *` | Every day at 2:00 AM |
+| `0 9 * * 1` | Every Monday at 9:00 AM |
+| `0 0 1 * *` | First of every month at midnight |
+
+---
+
+## PART 11: Soft Links vs Hard Links
+
+| Feature | Soft Link (Symlink) | Hard Link |
+|---|---|---|
+| **Command** | `ln -s source target` | `ln source target` |
+| **Reference** | Points to path of the original file | Points to raw disk data blocks (inode) |
+| **Deletion Impact**| If original file is deleted, link is broken | If original is deleted, data remains accessible |
+| **Cross-Filesystem**| Yes | No (restricted to same partition) |
+| **Directory Support**| Yes | No |
+
+---
+
+## PART 12: Complete Q&A Bank (30 Questions)
+
+#### Q1: Difference between Linux and Unix?
+* **Answer**: Linux is a free, open-source kernel created by Linus Torvalds in 1991. It is compiled with GNU tools to create distributions (Ubuntu, RedHat). Unix is a proprietary, closed-source operating system created by AT&T Bell Labs in 1969, usually tied to specific hardware (IBM AIX, HP-UX).
+
+#### Q2: How do you check running processes?
+* **Answer**: Use `ps aux` to output a snapshot of all active processes. Use `ps aux | grep nginx` to filter for specific processes, or open `htop` / `top` for a real-time interactive CPU/memory utilization feed.
+
+#### Q3: How do you search for text in a file?
+* **Answer**: Use `grep`. Use `grep "ERROR" app.log` to scan. Add `-i` for case-insensitivity: `grep -i "exception" app.log`. Add `-rn` to search recursively inside a folder with line numbers: `grep -rn "timeout" /var/log/`.
+
+#### Q4: What is an alias? How to make it persistent?
+* **Answer**: An alias is a customized command shortcut. Set temporarily using `alias ll='ls -la'`. To make it persistent for a user, write `alias ll='ls -la'` to `~/.bashrc` and run `source ~/.bashrc`. For all system users, append it to `/etc/bash.bashrc`.
+
+#### Q5: How to check available disk space?
+* **Answer**: Check overall filesystem usage using `df -h`. For checking individual directories, execute `du -sh /var/log/` or sort subdirectories by size: `du -sh * | sort -h`.
+
+#### Q6: What does chmod 755 mean?
+* **Answer**: User gets full permissions (`7` = 4+2+1 = rwx). Group gets read and execute (`5` = 4+0+1 = r-x). Others get read and execute (`5` = 4+0+1 = r-x).
+
+#### Q7: CPU spikes to 100% — first 5 steps?
+* **Answer**:
+  1. Open `htop` and press `Shift+P` to identify the PID consuming the most CPU.
+  2. Analyze the command: is it a runaway process (infinite loop) or a normal reindexing task?
+  3. Run `lsof -p PID` to examine what files and ports the process has open.
+  4. Inspect logs of the application for continuous exceptions.
+  5. Send `kill -15 PID` (SIGTERM) to stop it gracefully. If unresponsive, send `kill -9 PID` (SIGKILL).
+
+#### Q8: Server is unresponsive — what steps?
+* **Answer**:
+  1. Run `ping server-ip` to check Layer 3 connectivity. If it fails, run `traceroute` to find the hop failure.
+  2. Run `nc -zv server-ip 22` to check if SSH daemon is listening.
+  3. If reachable, SSH in and run `df -h` (check for 100% disk utilization) and `free -m` (check for memory exhaustion).
+  4. Run `dmesg | grep -i oom` to see if the kernel terminated services.
+  5. Check service health with `sudo systemctl status service-name` and view logs with `tail -100 /var/log/syslog`.
+
+#### Q9: Difference between kill -9 and kill -15?
+* **Answer**: `kill -15` (SIGTERM) requests the process to terminate. The process can catch this signal, clean up temporary resources, save state, and close open files. `kill -9` (SIGKILL) is sent to the kernel to terminate the process immediately. The process cannot catch or ignore this signal, risking data corruption.
+
+#### Q10: What is `/dev/null`?
+* **Answer**: A virtual device file (often called the black hole). Any data written to it is discarded. Used to silence verbose commands: `command &> /dev/null`.
+
+#### Q11: How to check which process uses port 8080?
+* **Answer**: Run `lsof -i :8080` or execute `ss -tulnp | grep 8080`.
+
+#### Q12: Difference between `cp` and `mv`?
+* **Answer**: `cp` copies the data to a new location, leaving the original intact. `mv` renames the file or moves it to a new path, deleting the original entry from the source directory.
+
+#### Q13: What is `2>/dev/null`?
+* **Answer**: Redirects standard error output (File Descriptor 2) to `/dev/null` while allowing standard output (stdout) to print normally in the terminal.
+
+#### Q14: How to find the top 5 largest files in `/var/log`?
+* **Answer**: Run `du -sh /var/log/* | sort -rh | head -5` or execute `find /var/log -type f -exec du -h {} + | sort -rh | head -5`.
+
+#### Q15: What does `ps aux | grep java | wc -l` do?
+* **Answer**: 
+  1. `ps aux` lists all running processes.
+  2. `grep java` filters for lines containing the word "java".
+  3. `wc -l` counts the number of lines. The full command returns the number of active Java processes plus one (for the grep process itself).
+
+#### Q16: Difference between `>` and `>>`?
+* **Answer**: `>` redirects output to a file, overwriting its existing content. `>>` redirects output to the end of a file, appending new data and preserving old content.
+
+#### Q17: How do you monitor a log file in real-time?
+* **Answer**: Use `tail -f /var/log/app.log`. To filter for error lines in real-time, execute `tail -f /var/log/app.log | grep --line-buffered "ERROR"`.
+
+#### Q18: How do you run a script in the background?
+* **Answer**: Append `&` to the end of the command: `./script.sh &`. To keep it running after the terminal session closes, prepend `nohup`: `nohup ./script.sh &`.
+
+#### Q19: How to schedule a task every day at 3 AM?
+* **Answer**: Run `crontab -e` and append: `0 3 * * * /path/to/script.sh`.
+
+#### Q20: What is the purpose of `/proc`?
+* **Answer**: It is a virtual pseudo-filesystem containing real-time kernel variables, hardware statistics, and process structures represented as file hierarchies (e.g. `/proc/meminfo`, `/proc/cpuinfo`).
+
+#### Q21: How to check open network connections?
+* **Answer**: Execute `ss -an` (modern, fast) or use the legacy `netstat -an` command.
+
+#### Q22: What is `lsof`?
+* **Answer**: "List Open Files". In Linux, everything is treated as a file. `lsof` lists files, network sockets, directories, and pipes opened by active processes. Use `lsof -i` for network ports or `lsof -u username` for files opened by a specific user.
+
+#### Q23: What does `uptime` show?
+* **Answer**: Displays the current system time, how long the system has been running, the number of logged-in users, and system load averages over the last 1, 5, and 15 minutes.
+
+#### Q24: How to find which user is logged in?
+* **Answer**: Run `who` to list active users. Run `w` to view who is logged in and their current process activity. Run `whoami` to verify the user account you are currently logged in with.
+
+#### Q25: How to redirect both stdout and stderr to a file?
+* **Answer**: Use `command &> file.log` (modern bash) or the POSIX-compliant syntax: `command > file.log 2>&1`.
+
+#### Q26: What is a daemon process?
+* **Answer**: A background process running continuously without being attached to an active terminal session. Daemons typically handle services (e.g. `sshd`, `cron`, `nginx`).
+
+#### Q27: How to check Linux version?
+* **Answer**: Read OS release parameters with `cat /etc/os-release` or check the kernel version using `uname -r`.
+
+#### Q28: What does `wc -l` do?
+* **Answer**: Word Count - Lines. It counts the total number of lines in a text file or stream input.
+
+#### Q29: How to compress a file in Linux?
+* **Answer**: Run `gzip file.log` (replaces with `file.log.gz`). To compress while keeping the original file, execute `gzip -k file.log`.
+
+#### Q30: How do you read a compressed log without extracting?
+* **Answer**: Open the file in the terminal using `zless file.log.gz` or run `zcat file.log.gz` to pipe its output. Use `zgrep "pattern" file.log.gz` to search inside it.
+
+---
+
+## PART 13: Quick Revision Cheat Sheet (Last Hour Revision)
+
+```bash
+# LOG INSPECTION
+tail -f /var/log/app.log                          # Follow live
+tail -100 /var/log/app.log | grep ERROR           # Last 100, filter
+grep -A 10 "Exception" app.log                    # Stack trace context
+sed -n '/14:30/,/14:35/p' app.log                 # Time range
+
+# PERMISSIONS
+chmod 755 script.sh                               # Standard script
+chmod +x script.sh                                # Make executable
+chown appuser:appgroup /var/log/app.log           # Fix ownership
+
+# PROCESS INVESTIGATION
+ps aux | grep python                              # Find python process
+lsof -i :3306                                     # Who uses MySQL port
+kill -15 PID                                      # Graceful kill
+kill -9 PID                                       # Force kill
+
+# DISK EMERGENCY
+df -h                                             # Check disk usage
+du -sh /var/log/* | sort -rh | head -10           # Find log hogs
+gzip /var/log/old_app.log                         # Compress to save space
+
+# NETWORK DIAGNOSTICS
+ping 8.8.8.8                                      # Basic connectivity
+nc -zv hostname 5432                              # Test PostgreSQL port
+curl -I https://api.greyorange.com                # HTTP header check
+```
