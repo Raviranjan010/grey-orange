@@ -7,7 +7,7 @@
 ---
 
 ## PART 1: The 7 OSI Model Layers
-
+##
 To remember the layers from top to bottom (7 down to 1), use this mnemonic:  
 **P**lease **D**o **N**ot **T**hrow **S**ausage **P**izza **A**way (*Physical, Data Link, Network, Transport, Session, Presentation, Application*).
 
