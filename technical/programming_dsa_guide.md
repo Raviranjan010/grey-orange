@@ -43,7 +43,7 @@ finally:
 
 ---
 
-## PART 3: Log Reading Memory Optimization (CRITICAL)
+## PART 3: Log Reading Memory Optimization (CRITICAL)-
 
 When writing automation scripts, **never** read entire log files into memory using `.read()` or `.readlines()` on production servers. If a log file is 10GB, the system will run out of memory (OOM) and crash.
 
