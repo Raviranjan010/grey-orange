@@ -17,7 +17,7 @@ To maximize your selection probability, your preparation must focus heavily on t
 
 ## 📆 Day-by-Day Schedule
 
-### 📅 Day 1 — June 17 (Today): Linux Core File Operations (45% weight block)
+### 📅 Day  (Today): Linux Core File Operations (45% weight block)
 * **Goal**: Master basic file and directory commands and understand their flags deeply.
 * **Topics to Cover**:
   * [ ] File & Directory Navigation: `ls`, `cd`, `pwd`, `mkdir`.
