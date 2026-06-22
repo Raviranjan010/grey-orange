@@ -5,7 +5,7 @@ The Pre-Placement Talk (PPT) is the very first event on Day 1 of the hiring driv
 
 ---
 
-## 🎯 Why the PPT Matters!
+## 🎯 Why the PPT Matters!!
 1. **Recruiter Observation**: Panel members sit at the back or sides and look for candidates showing active interest.
 2. **Cheat Code for GD & Interviews**: Facts dropped during the PPT (e.g., specific clients, new warehouse sites, software releases) can be woven into your Group Discussion and interviews.
 3. **The Q&A Hook**: Asking a smart, technically sound question at the end of the PPT is the easiest way to get your face and name remembered by the hiring panel before the elimination rounds begin.
